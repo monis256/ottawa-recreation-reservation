@@ -1,0 +1,24 @@
+# name: Cron reservation
+
+# on:
+#   schedule:
+#     - cron: '0 22 * * *' # 22:00 UTC (6pm EST)
+
+# jobs:
+#   cron:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-python@v4
+#         with:
+#           python-version: 3.11
+#           cache: 'pip'
+#       - run: pip install -r requirements.txt
+#       - run: ./src/checker.py
+#       - run: ./src/reservation.py
+#         env:
+#           PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
+#           EMAIL: ${{ secrets.EMAIL }}
+#           NAME: ${{ secrets.NAME }}
+#           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+#           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

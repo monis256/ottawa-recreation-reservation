@@ -1,0 +1,103 @@
+{
+  "_comment": "Facilities with Adult Volleyball reservations, update it in case of change in schedule",
+  "facilities": [
+    {
+      "name": "CARDELREC Recreation Complex Goulbourn",
+      "id": "cardelrec-recreation-complex-goulbourn",
+      "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/cardelrec-recreation-complex-goulbourn",
+      "link": "https://reservation.frontdesksuite.ca/rcfs/cardelrec/",
+      "change": "June 16 2023",
+      "activity": "Volleyball - adult",
+      "schedule": [
+        {
+          "day": "Thursday",
+          "time": "8:30 - 9:30 pm"
+        }
+      ]
+    },
+    {
+      "name": "François Dupuis Recreation Centre",
+      "id": "francois-dupuis-recreation-centre",
+      "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/francois-dupuis-recreation-centre",
+      "link": "https://reservation.frontdesksuite.ca/rcfs/francoisdupuis/",
+      "change": "June 25 2023",
+      "activity": "Volleyball 16+",
+      "schedule": [
+        {
+          "day": "Thursday",
+          "time": "6:40 - 7:40 pm"
+        },
+        {
+          "day": "Thursday",
+          "time": "7:50 - 8:50 pm"
+        }
+      ]
+    },
+    {
+      "name": "Hunt Club-Riverside Park Community Centre",
+      "id": "hunt-club-riverside-park-community-centre",
+      "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/hunt-club-riverside-park-community-centre",
+      "link": "https://reservation.frontdesksuite.ca/rcfs/huntclubCC/",
+      "change": "June 18 2023",
+      "activity": "Volleyball",
+      "schedule": [
+        {
+          "day": "Saturday",
+          "time": "12:30 - 1:30 pm"
+        }
+      ]
+    },
+    {
+      "name": "Minto Recreation Complex - Barrhaven",
+      "id": "minto-recreation-complex-barrhaven",
+      "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/minto-recreation-complex-barrhaven",
+      "link": "https://reservation.frontdesksuite.ca/rcfs/mintobarrhaven/",
+      "activity": "Volleyball - Adult",
+      "change": "June 25 2023",
+      "schedule": [
+        {
+          "day": "Monday",
+          "time": "8 - 9 pm"
+        },
+        {
+          "day": "Friday",
+          "time": "7 - 8 pm"
+        },
+        {
+          "day": "Friday",
+          "time": "8 - 9 pm"
+        }
+      ]
+    },
+    {
+      "name": "Richcraft Recreation Complex-Kanata",
+      "id": "richcraft-recreation-complex-kanata",
+      "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/richcraft-recreation-complex-kanata",
+      "link": "https://reservation.frontdesksuite.ca/rcfs/richcraftkanata/",
+      "change": "June 25 2023",
+      "activity": "Volleyball - adult",
+      "schedule": [
+        {
+          "day": "Tuesday",
+          "time": "11 am - 12 pm"
+        },
+        {
+          "day": "Tuesday",
+          "time": "12 pm - 1 pm"
+        },
+        {
+          "day": "Friday",
+          "time": "12 pm - 1 pm"
+        },
+        {
+          "day": "Saturday",
+          "time": "6 - 7 pm"
+        },
+        {
+          "day": "Saturday",
+          "time": "7 - 8 pm"
+        }
+      ]
+    }
+  ]
+}
