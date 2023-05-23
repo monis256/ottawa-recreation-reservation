@@ -30,7 +30,7 @@ File [`json/schedule.json`](json/schedule.json) contains a list of facilities (f
 }
 ```
 
-File in [`json/reservespot.json`](json/reservespot.json) that has the same structure, but we use it only for setting facilities and slots we want to reserve.
+File in [`json/reserve.json`](json/reserve.json) that has the same structure, but we use it only for setting facilities and slots we want to reserve.
 
 ## Prerequisites
 
