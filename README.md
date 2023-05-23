@@ -1,16 +1,17 @@
-# ottawa-rec-reservation
+# ottawa-recreation-reservation
 
 Ottawa recreation reservation script
 
 ## Intro
 
-This script with the possibilities of GitHub Actions allows me to do my sports reservations automatically.
+This script allows making sports reservations automatically.
+It runs with Python, schedules with GitHub Actions and sends notifications to Telegram.
 
-Registration for drop-in events begins 2 days in advance at 6 PM so I use a cronjob to run the script periodically.
+Registration for drop-in events begins 2 days in advance at 6 PM so I use a cronjob to run the script periodically at this time.
 
-There are two ways to use the script: manually or automatically (using local cron or some CI/CD tool, like GitHub Actions).
+There are two ways to use the script: *manually* or *automatically* (using local cron or some CI/CD tool, like GitHub Actions).
 
-There is a schedule file in [`json/schedule.json`](json/schedule.json) that contains a list of facilities (for Adult Volleyball in my case) in this format:
+File [`json/schedule.json`](json/schedule.json) contains a list of facilities (for Adult Volleyball in my case) in this format:
 
 ```json
 {
@@ -29,7 +30,7 @@ There is a schedule file in [`json/schedule.json`](json/schedule.json) that cont
 }
 ```
 
-There is also a file in [`json/reservespot.json`](json/reservespot.json) that has the same structure, but we use it only for setting facilities and slots we want to reserve.
+File in [`json/reservespot.json`](json/reservespot.json) that has the same structure, but we use it only for setting facilities and slots we want to reserve.
 
 ## Prerequisites
 
@@ -46,7 +47,7 @@ EMAIL="my-email@gmail.com"
 NAME="John Doe"
 ```
 
-In case you want to get a message in Telegram, set the Telegram token and chat ID:
+In case you want to receive a message in Telegram, set the Telegram token and chat ID:
 
 ```ini
 TELEGRAM_BOT_TOKEN=12345:AABBCCDDEEFFGG
@@ -86,4 +87,7 @@ The idea is to run it periodically (for example every hour during the daytime) t
 
 1. Fork this repo
 2. Go to `Settings - Secrets and variables - Actions` and set all needed secrets from the `.env-sample` file
+
+![](img/secrets.png)
+
 3. You can see the result in the Actions tab on GitHub
