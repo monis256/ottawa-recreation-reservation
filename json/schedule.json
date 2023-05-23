@@ -6,11 +6,10 @@
       "id": "cardelrec-recreation-complex-goulbourn",
       "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/cardelrec-recreation-complex-goulbourn",
       "link": "https://reservation.frontdesksuite.ca/rcfs/cardelrec/",
-      "change": "2023-06-16",
       "activity": "Volleyball - adult",
       "schedule": [
         {
-          "day": "Thursday",
+          "day_of_week": 4,
           "starting_time": "20:30:00",
           "ending_time": "21:30:00"
         }
@@ -21,16 +20,15 @@
       "id": "francois-dupuis-recreation-centre",
       "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/francois-dupuis-recreation-centre",
       "link": "https://reservation.frontdesksuite.ca/rcfs/francoisdupuis/",
-      "change": "2023-06-25",
       "activity": "Volleyball 16+",
       "schedule": [
         {
-          "day": "Thursday",
+          "day_of_week": 4,
           "starting_time": "18:40:00",
           "ending_time": "19:40:00"
         },
         {
-          "day": "Thursday",
+          "day_of_week": 4,
           "starting_time": "19:50:00",
           "ending_time": "20:50:00"
         }
@@ -41,11 +39,10 @@
       "id": "hunt-club-riverside-park-community-centre",
       "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/hunt-club-riverside-park-community-centre",
       "link": "https://reservation.frontdesksuite.ca/rcfs/huntclubCC/",
-      "change": "2023-06-18",
       "activity": "Volleyball",
       "schedule": [
         {
-          "day": "Saturday",
+          "day_of_week": 6,
           "starting_time": "12:30:00",
           "ending_time": "13:30:00"
         }
@@ -57,20 +54,19 @@
       "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/minto-recreation-complex-barrhaven",
       "link": "https://reservation.frontdesksuite.ca/rcfs/mintobarrhaven/",
       "activity": "Volleyball - Adult",
-      "change": "2023-06-25",
       "schedule": [
         {
-          "day": "Monday",
+          "day_of_week": 1,
           "starting_time": "20:00:00",
           "ending_time": "21:00:00"
         },
         {
-          "day": "Friday",
+          "day_of_week": 5,
           "starting_time": "19:00:00",
           "ending_time": "20:00:00"
         },
         {
-          "day": "Friday",
+          "day_of_week": 5,
           "starting_time": "20:00:00",
           "ending_time": "21:00:00"
         }
@@ -81,31 +77,30 @@
       "id": "richcraft-recreation-complex-kanata",
       "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/richcraft-recreation-complex-kanata",
       "link": "https://reservation.frontdesksuite.ca/rcfs/richcraftkanata/",
-      "change": "2023-06-25",
       "activity": "Volleyball - adult",
       "schedule": [
         {
-          "day": "Tuesday",
+          "day_of_week": 4,
           "starting_time": "11:00:00",
           "ending_time": "12:00:00"
         },
         {
-          "day": "Tuesday",
+          "day_of_week": 4,
           "starting_time": "12:00:00",
           "ending_time": "13:00:00"
         },
         {
-          "day": "Friday",
+          "day_of_week": 5,
           "starting_time": "12:00:00",
           "ending_time": "13:00:00"
         },
         {
-          "day": "Saturday",
+          "day_of_week": 6,
           "starting_time": "18:00:00",
           "ending_time": "19:00:00"
         },
         {
-          "day": "Saturday",
+          "day_of_week": 6,
           "starting_time": "19:00:00",
           "ending_time": "20:00:00"
         }
