@@ -19,12 +19,13 @@ File [`json/schedule.json`](json/schedule.json) contains a list of facilities (f
   "id": "cardelrec-recreation-complex-goulbourn",
   "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/cardelrec-recreation-complex-goulbourn",
   "link": "https://reservation.frontdesksuite.ca/rcfs/cardelrec/",
-  "change": "June 16 2023",
+  "change": "2023-06-16",
   "activity": "Volleyball - adult",
   "schedule": [
     {
       "day": "Thursday",
-      "time": "8:30 - 9:30 pm"
+      "starting_time": "20:30:00",
+      "ending_time": "21:30:00"
     }
   ]
 }
