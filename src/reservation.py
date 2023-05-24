@@ -4,9 +4,10 @@ import datetime
 import json
 import logging
 import sys
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-#from selenium.webdriver.common.by import By
+from selenium.webdriver.common.by import By
 #from selenium.webdriver.support.select import Select
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -21,7 +22,8 @@ def find_slots(json_file_path):
     with open(json_file_path) as file:
         data = json.load(file)
 
-    current_date = datetime.date.today() + datetime.timedelta(days=1)
+    logging.info('Looking for available slots...')
+    current_date = datetime.date.today() # + datetime.timedelta(days=1)
     future_weekday = current_date + datetime.timedelta(days=2)
     future_weekday_iso = future_weekday.isoweekday()
 
@@ -51,22 +53,31 @@ def find_slots(json_file_path):
                 slots.append(slot_data)
 
                 facility_data = {
-                    "name": facility_name,
                     "link": facility_link,
                     "activity_button": facility_activity_button,
                     "slots": slots
                 }
+
                 available_facilities[facility_name] = facility_data
-                available_slots = json.dumps(available_facilities, indent=2)
 
     if not available_facilities:
         logging.error('❌ No slots found for %s', future_weekday)
         sys.exit()
 
-    return available_slots
+    return available_facilities
 
-def reserve_slots(driver):
-    print("test")
+def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
+    try:
+        message = f'Booking slot in {recreation_name} at {recreation_slot["starting_time"]} - {recreation_slot["ending_time"]}...'
+        logging.info(message)
+
+        driver.get(recreation_details["link"])
+        driver.find_element(By.XPATH, "//div[text()='" + recreation_details["activity_button"] + "']").click()
+
+        time.sleep(2) # TEMP TOREMOVE
+
+    except Exception as err:
+        logging.error('❌ Exception: %s', err)
 
 def main():
 
@@ -76,15 +87,17 @@ def main():
 
     try:
         available_slots = find_slots(RESERVE_JSON_PATH)
-        print(available_slots)
 
-        #chrome_options = Options()
+        print("")
+
+        chrome_options = Options()
         #chrome_options.add_argument("--headless")
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
 
-        #service = Service(ChromeDriverManager().install())
-        #driver = webdriver.Chrome(service=service, options=chrome_options)
-        # TODO: parse json, for every slot run reserve_slots function
-        # and book slot (gmail integration + tg integration)
+        for recreation_name, recreation_details in available_slots.items():
+            for recreation_slot in recreation_details["slots"]:
+                reserve_slots(driver, recreation_name, recreation_details, recreation_slot)
 
     except Exception as err:
         logging.error('❌ Exception: %s', err)
