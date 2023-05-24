@@ -16,10 +16,9 @@ File [`json/schedule.json`](json/schedule.json) contains a list of facilities (f
 ```json
 {
   "name": "CARDELREC Recreation Complex Goulbourn",
-  "id": "cardelrec-recreation-complex-goulbourn",
   "home": "https://ottawa.ca/en/recreation-and-parks/recreation-facilities/facility-listing/cardelrec-recreation-complex-goulbourn",
   "link": "https://reservation.frontdesksuite.ca/rcfs/cardelrec/",
-  "activity": "Volleyball - adult",
+  "activity_button": "Volleyball - adult",
   "schedule": [
     {
       "day": 4,
@@ -30,7 +29,7 @@ File [`json/schedule.json`](json/schedule.json) contains a list of facilities (f
 }
 ```
 
-File in [`json/reserve.json`](json/reserve.json) that has the same structure, but we use it only for setting facilities and slots we want to reserve.
+File [`json/reserve.json`](json/reserve.json) has the same structure, but we use it only for setting facilities and slots we want to reserve.
 
 ## Prerequisites
 
