@@ -11,7 +11,7 @@ Registration for drop-in events begins 2 days in advance at 6 PM so I use a cron
 
 There are two ways to use the script: *manually* or *automatically* (using local cron or some CI/CD tool, like GitHub Actions).
 
-File [`json/schedule.json`](json/schedule.json) contains a list of facilities (for Adult Volleyball in my case) in this format:
+File [`schedule.json`](schedule.json) contains a list of facilities (for Adult Volleyball in my case) in this format:
 
 ```json
 {
@@ -23,13 +23,12 @@ File [`json/schedule.json`](json/schedule.json) contains a list of facilities (f
     {
       "day": 4,
       "starting_time": "20:30:00",
-      "ending_time": "21:30:00"
+      "ending_time": "21:30:00",
+      "follow": true
     }
   ]
 }
 ```
-
-File [`json/reserve.json`](json/reserve.json) has the same structure, but we use it only for setting facilities and slots we want to reserve.
 
 ## Prerequisites
 
@@ -90,3 +89,5 @@ The idea is to run it periodically (for example every hour during the daytime) t
 ![](img/secrets.png)
 
 3. You can see the result in the Actions tab on GitHub
+
+*I scheduled a script run at 5:59 pm due to the [high load period](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) on every hour in GitHub Actions*

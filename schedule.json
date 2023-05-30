@@ -10,7 +10,8 @@
         {
           "day_of_week": 4,
           "starting_time": "20:30:00",
-          "ending_time": "21:30:00"
+          "ending_time": "21:30:00",
+          "follow": true
         }
       ]
     },
@@ -23,12 +24,14 @@
         {
           "day_of_week": 4,
           "starting_time": "18:40:00",
-          "ending_time": "19:40:00"
+          "ending_time": "19:40:00",
+          "follow": false
         },
         {
           "day_of_week": 4,
           "starting_time": "19:50:00",
-          "ending_time": "20:50:00"
+          "ending_time": "20:50:00",
+          "follow": false
         }
       ]
     },
@@ -41,7 +44,8 @@
         {
           "day_of_week": 6,
           "starting_time": "12:30:00",
-          "ending_time": "13:30:00"
+          "ending_time": "13:30:00",
+          "follow": false
         }
       ]
     },
@@ -54,17 +58,20 @@
         {
           "day_of_week": 1,
           "starting_time": "20:00:00",
-          "ending_time": "21:00:00"
+          "ending_time": "21:00:00",
+          "follow": true
         },
         {
           "day_of_week": 5,
           "starting_time": "19:00:00",
-          "ending_time": "20:00:00"
+          "ending_time": "20:00:00",
+          "follow": true
         },
         {
           "day_of_week": 5,
           "starting_time": "20:00:00",
-          "ending_time": "21:00:00"
+          "ending_time": "21:00:00",
+          "follow": true
         }
       ]
     },
@@ -77,27 +84,32 @@
         {
           "day_of_week": 4,
           "starting_time": "11:00:00",
-          "ending_time": "12:00:00"
+          "ending_time": "12:00:00",
+          "follow": false
         },
         {
           "day_of_week": 4,
           "starting_time": "12:00:00",
-          "ending_time": "13:00:00"
+          "ending_time": "13:00:00",
+          "follow": false
         },
         {
           "day_of_week": 5,
           "starting_time": "12:00:00",
-          "ending_time": "13:00:00"
+          "ending_time": "13:00:00",
+          "follow": false
         },
         {
           "day_of_week": 6,
           "starting_time": "18:00:00",
-          "ending_time": "19:00:00"
+          "ending_time": "19:00:00",
+          "follow": false
         },
         {
           "day_of_week": 6,
           "starting_time": "19:00:00",
-          "ending_time": "20:00:00"
+          "ending_time": "20:00:00",
+          "follow": false
         }
       ]
     }

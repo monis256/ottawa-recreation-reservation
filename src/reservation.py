@@ -14,8 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 # from env_vars import EnvVars
 # from telegram_bot import TelegramBot
 
-#SCHEDULE_JSON_PATH = '../json/schedule.json'
-RESERVE_JSON_PATH = '../json/reserve.json'
+SCHEDULE_JSON_PATH = '../schedule.json'
 
 
 def find_slots(json_file_path):
@@ -40,8 +39,9 @@ def find_slots(json_file_path):
             slot_day_of_week = slot["day_of_week"]
             slot_starting_time = slot["starting_time"]
             slot_ending_time = slot["ending_time"]
+            slot_follow = slot["follow"]
 
-            if future_weekday_iso == slot_day_of_week:
+            if future_weekday_iso == slot_day_of_week and slot_follow:
                 message = f'✅ Slot found in {facility_name} on {future_weekday} at {slot_starting_time} - {slot_ending_time}'
                 logging.info(message)
 
@@ -74,6 +74,7 @@ def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
         driver.get(recreation_details["link"])
         driver.find_element(By.XPATH, "//div[text()='" + recreation_details["activity_button"] + "']").click()
 
+        # if No more available times, then return zero
         time.sleep(2) # TEMP TOREMOVE
 
     except Exception as err:
@@ -86,7 +87,7 @@ def main():
     logging.getLogger('WDM').setLevel(logging.ERROR)
 
     try:
-        available_slots = find_slots(RESERVE_JSON_PATH)
+        available_slots = find_slots(SCHEDULE_JSON_PATH)
 
         print("")
 
