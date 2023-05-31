@@ -1,5 +1,4 @@
 {
-  "_comment": "Facilities with Adult Volleyball reservations, update it in case of change in schedule",
   "facilities": [
     {
       "name": "CARDELREC Recreation Complex Goulbourn",
@@ -9,8 +8,7 @@
       "schedule": [
         {
           "day_of_week": 4,
-          "starting_time": "20:30:00",
-          "ending_time": "21:30:00",
+          "starting_time": "8:30 PM",
           "follow": true
         }
       ]
@@ -23,14 +21,12 @@
       "schedule": [
         {
           "day_of_week": 4,
-          "starting_time": "18:40:00",
-          "ending_time": "19:40:00",
+          "starting_time": "6:40 PM",
           "follow": false
         },
         {
           "day_of_week": 4,
-          "starting_time": "19:50:00",
-          "ending_time": "20:50:00",
+          "starting_time": "7:50 PM",
           "follow": false
         }
       ]
@@ -43,8 +39,7 @@
       "schedule": [
         {
           "day_of_week": 6,
-          "starting_time": "12:30:00",
-          "ending_time": "13:30:00",
+          "starting_time": "12:30 PM",
           "follow": false
         }
       ]
@@ -57,20 +52,17 @@
       "schedule": [
         {
           "day_of_week": 1,
-          "starting_time": "20:00:00",
-          "ending_time": "21:00:00",
+          "starting_time": "8:00 PM",
           "follow": true
         },
         {
           "day_of_week": 5,
-          "starting_time": "19:00:00",
-          "ending_time": "20:00:00",
+          "starting_time": "7:00 PM",
           "follow": true
         },
         {
           "day_of_week": 5,
-          "starting_time": "20:00:00",
-          "ending_time": "21:00:00",
+          "starting_time": "8:00 PM",
           "follow": true
         }
       ]
@@ -83,32 +75,27 @@
       "schedule": [
         {
           "day_of_week": 4,
-          "starting_time": "11:00:00",
-          "ending_time": "12:00:00",
+          "starting_time": "11:00 AM",
           "follow": false
         },
         {
           "day_of_week": 4,
-          "starting_time": "12:00:00",
-          "ending_time": "13:00:00",
+          "starting_time": "12:00 PM",
           "follow": false
         },
         {
           "day_of_week": 5,
-          "starting_time": "12:00:00",
-          "ending_time": "13:00:00",
+          "starting_time": "12:00 PM",
           "follow": false
         },
         {
           "day_of_week": 6,
-          "starting_time": "18:00:00",
-          "ending_time": "19:00:00",
+          "starting_time": "6:00 PM",
           "follow": false
         },
         {
           "day_of_week": 6,
-          "starting_time": "19:00:00",
-          "ending_time": "20:00:00",
+          "starting_time": "7:00 PM",
           "follow": false
         }
       ]

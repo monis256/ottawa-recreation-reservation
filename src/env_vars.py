@@ -11,7 +11,9 @@ class EnvVars:
 
     Attributes:
     - phone_number (str): The phone number.
-    - email (str): The email address to get confirmation to.
+    - imap_email (str): The email address to get confirmation to.
+    - imap_password (str): The email password.
+    - imap_server (str): The email IMAP server.
     - name (str): Your name for reservation.
     - telegram_bot_token (str): The Telegram bot token used to authenticate requests.
     - telegram_chat_id (str): The chat ID of the configured Telegram chat.
@@ -23,8 +25,10 @@ class EnvVars:
         Initializes an instance of the EnvVars class with environment variables.
     """
     REQUIRED_VARS = (
-        'PHONE_NUMBER'
-        'EMAIL',
+        'PHONE_NUMBER',
+        'IMAP_EMAIL',
+        'IMAP_PASSWORD',
+        'IMAP_SERVER',
         'NAME',
         'TELEGRAM_BOT_TOKEN',
         'TELEGRAM_CHAT_ID'
@@ -41,7 +45,9 @@ class EnvVars:
         - None
         """
         self.phone_number = env_vars['PHONE_NUMBER']
-        self.email = env_vars['EMAIL']
+        self.imap_email = env_vars['IMAP_EMAIL']
+        self.imap_password = env_vars['IMAP_PASSWORD']
+        self.imap_server = env_vars['IMAP_SERVER']
         self.name = env_vars['NAME']
         self.telegram_bot_token = env_vars['TELEGRAM_BOT_TOKEN']
         self.telegram_chat_id = env_vars['TELEGRAM_CHAT_ID']

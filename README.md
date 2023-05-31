@@ -22,8 +22,7 @@ File [`schedule.json`](schedule.json) contains a list of facilities (for Adult V
   "schedule": [
     {
       "day": 4,
-      "starting_time": "20:30:00",
-      "ending_time": "21:30:00",
+      "starting_time": "8:30 PM",
       "follow": true
     }
   ]
@@ -40,7 +39,7 @@ The first approach is good for running the script manually on the local machine 
 The content of `.env` (or env vars in your CI/CD system) should have these variables, they are mandatory:
 
 ```ini
-PHONE_NUMBER="+1234567890"
+PHONE_NUMBER="234567890"
 EMAIL="my-email@gmail.com"
 NAME="John Doe"
 ```

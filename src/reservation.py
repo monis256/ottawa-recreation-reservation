@@ -8,13 +8,19 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-#from selenium.webdriver.support.select import Select
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-# from env_vars import EnvVars
-# from telegram_bot import TelegramBot
+from env_vars import EnvVars
+from email_confirmation import get_confirmation_code
+from telegram_bot import TelegramBot
 
-SCHEDULE_JSON_PATH = '../schedule.json'
+# Initialize environment variables and Telegram bot
+env_vars = EnvVars.check_env_vars(EnvVars.REQUIRED_VARS)
+env_var = EnvVars(env_vars)
+telegram_bot = TelegramBot(env_var)
+
+SCHEDULE_JSON_PATH = "../schedule-test.json"
+GROUP_SIZE = 1
 
 
 def find_slots(json_file_path):
@@ -22,7 +28,7 @@ def find_slots(json_file_path):
         data = json.load(file)
 
     logging.info('Looking for available slots...')
-    current_date = datetime.date.today() # + datetime.timedelta(days=1)
+    current_date = datetime.date.today() # - datetime.timedelta(days=1)
     future_weekday = current_date + datetime.timedelta(days=2)
     future_weekday_iso = future_weekday.isoweekday()
 
@@ -38,17 +44,15 @@ def find_slots(json_file_path):
         for slot in facility_schedule:
             slot_day_of_week = slot["day_of_week"]
             slot_starting_time = slot["starting_time"]
-            slot_ending_time = slot["ending_time"]
             slot_follow = slot["follow"]
 
             if future_weekday_iso == slot_day_of_week and slot_follow:
-                message = f'✅ Slot found in {facility_name} on {future_weekday} at {slot_starting_time} - {slot_ending_time}'
+                message = f'✅ Slot found in {facility_name} on {future_weekday} at {slot_starting_time}'
                 logging.info(message)
 
                 slot_data = {
                     "day_of_week": slot_day_of_week,
-                    "starting_time": slot_starting_time,
-                    "ending_time": slot_ending_time
+                    "starting_time": slot_starting_time
                 }
                 slots.append(slot_data)
 
@@ -66,19 +70,59 @@ def find_slots(json_file_path):
 
     return available_facilities
 
+
 def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
     try:
-        message = f'Booking slot in {recreation_name} at {recreation_slot["starting_time"]} - {recreation_slot["ending_time"]}...'
+        message = f'Booking slot in {recreation_name} at {recreation_slot["starting_time"]}...'
         logging.info(message)
 
         driver.get(recreation_details["link"])
         driver.find_element(By.XPATH, "//div[text()='" + recreation_details["activity_button"] + "']").click()
 
-        # if No more available times, then return zero
-        time.sleep(2) # TEMP TOREMOVE
+        # If there is a free slot
+        reservation_count_input = driver.find_element(By.ID, "reservationCount")
+        reservation_count_input.clear()
+        reservation_count_input.send_keys(GROUP_SIZE)
+        driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
+        driver.find_element(By.CLASS_NAME, "date-text").click()
+        driver.find_element(By.XPATH, "//a[contains(span[@class='mdc-button__label available-time'], '" + recreation_slot["starting_time"] + "')]").click()
+
+        telephone_input = driver.find_element(By.ID, "telephone")
+        telephone_input.clear()
+        telephone_input.send_keys(env_var.phone_number)
+
+        email_input = driver.find_element(By.ID, "email")
+        email_input.clear()
+        email_input.send_keys(env_var.imap_email)
+
+        name_input = driver.find_element(By.ID, "field2021")
+        name_input.clear()
+        name_input.send_keys(env_var.name)
+        time.sleep(2)
+
+        driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
+
+        confirmation_code = None
+        while confirmation_code is None:
+            time.sleep(1)
+            logging.info("Waiting for a code to verify booking...")
+            confirmation_code = get_confirmation_code(env_var.imap_server, env_var.imap_email, env_var.imap_password)
+
+        logging.info('✅ A verification code is %s', confirmation_code)
+
+        code_input = driver.find_element(By.ID, "code")
+        code_input.clear()
+        code_input.send_keys(confirmation_code)
+        driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
+
+        message = f'✅ Successfully booked a slot in {recreation_name} at {recreation_slot["starting_time"]} ({recreation_details["activity_button"]})'
+        logging.info(message)
+        telegram_bot.send_message(message)
+        telegram_bot.send_photo(driver.get_screenshot_as_png())
 
     except Exception as err:
         logging.error('❌ Exception: %s', err)
+        telegram_bot.send_photo(driver.get_screenshot_as_png())
 
 def main():
 
@@ -92,7 +136,7 @@ def main():
         print("")
 
         chrome_options = Options()
-        #chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--headless")
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
 

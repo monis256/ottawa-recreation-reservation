@@ -1,5 +1,4 @@
 __pycache__/
 .env
 .DS_Store
-reserve-test.json
-reservation-test.py
+schedule-test.json
