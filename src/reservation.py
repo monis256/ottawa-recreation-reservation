@@ -24,7 +24,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 schedule_json_path = os.path.join(script_dir, '..', 'schedule.json')
 
 GROUP_SIZE = 1
-TARGET_RUN_TIME = "18:00:00"
+#TARGET_RUN_TIME = "18:00:00"
 
 
 def find_slots(json_file_path):
