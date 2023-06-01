@@ -15,6 +15,8 @@ To simplify this process and increase your chances of getting a reservation, I h
 3. Parses verification codes from emails using IMAP. *Please note that this feature doesn't work with Gmail due to their policies ([learn more](https://support.google.com/accounts/answer/6010255))*
 4. Sends the booking results to your Telegram account, keeping you updated
 
+![Booking result](img/telegram.png)
+
 ## Schedule configuration
 
 The file [`schedule.json`](schedule.json) contains a list of facilities for Adult Volleyball (or any other activity). Each facility entry follows this format:
@@ -38,7 +40,7 @@ The file [`schedule.json`](schedule.json) contains a list of facilities for Adul
 - `name (str)`: The name of the facility
 - `home (str)`: The homepage of the facility where you can find the schedule
 - `link (str)`: The booking page for the facility
-- `activity_button (str)`: The exact name of the button to be clicked for booking. Make sure to use the correct name
+- `activity_button (str)`: The exact name of the button to be clicked for booking. Make sure to use the correct name (use the browser's inspector for button element)
 - `schedule[] (list)`: A list of schedules
 - `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
 - `starting_time (str)`: The starting time for the activity
