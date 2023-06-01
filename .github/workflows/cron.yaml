@@ -13,6 +13,8 @@ jobs:
         with:
           python-version: 3.11
           cache: 'pip'
+      - run: sudo timedatectl set-timezone America/Toronto
+      - run: timedatectl
       - run: pip install -r requirements.txt
       - run: ./src/reservation.py
         env:
