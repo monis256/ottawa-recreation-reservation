@@ -17,7 +17,7 @@ jobs:
           cache: 'pip'
       - run: sudo timedatectl set-timezone America/Toronto
       - run: pip install -r requirements.txt
-      - run: ./src/reservation.py
+      - run: ./src/main.py
         env:
           PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
           IMAP_EMAIL: ${{ secrets.IMAP_EMAIL }}

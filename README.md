@@ -71,7 +71,7 @@ pip install -r requirements.txt
 5. Run the script:
 
 ```bash
-./src/reservation.py
+./src/main.py
 ...
 ```
 
