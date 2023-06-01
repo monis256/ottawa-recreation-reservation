@@ -41,7 +41,7 @@ class SlotBookingApp:
             if TARGET_RUN_TIME == "18:00:00":
                 current_time = time.strftime("%H:%M:%S")
                 while current_time < TARGET_RUN_TIME:
-                    time.sleep(1)
+                    time.sleep(2)
                     current_time = time.strftime("%H:%M:%S")
                     message = (
                         f'Waiting for {TARGET_RUN_TIME} to '

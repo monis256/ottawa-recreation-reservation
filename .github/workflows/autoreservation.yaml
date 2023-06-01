@@ -3,7 +3,7 @@ name: Autoreservation
 on:
   workflow_dispatch:
   schedule:
-    - cron: '59 21 * * *' # 21:59 UTC (5:59pm EST)
+    - cron: '58 21 * * *' # 21:59 UTC (5:58pm EST)
 
 jobs:
   autoreservation:
