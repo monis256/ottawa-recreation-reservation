@@ -20,6 +20,7 @@ env_var = EnvVars(env_vars)
 telegram_bot = TelegramBot(env_var)
 
 SCHEDULE_JSON_PATH = "../schedule.json"
+# SCHEDULE_JSON_PATH = "../schedule-test.json"
 GROUP_SIZE = 1
 
 
@@ -28,7 +29,8 @@ def find_slots(json_file_path):
         data = json.load(file)
 
     logging.info('Looking for available slots...')
-    current_date = datetime.date.today() #- datetime.timedelta(days=1)
+    current_date = datetime.date.today()
+    # current_date = datetime.date.today() - datetime.timedelta(days=1)
     future_weekday = current_date + datetime.timedelta(days=2)
     future_weekday_iso = future_weekday.isoweekday()
 

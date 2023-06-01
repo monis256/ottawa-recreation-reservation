@@ -45,41 +45,45 @@ class ConfirmationCodeExtractor:
         - confirmation_code (str): The extracted confirmation code, or None if not found.
         """
 
-        imap = imaplib.IMAP4_SSL(self.imap_server)
-        imap.login(self.imap_email, self.imap_password)
-
-        FROM_EMAIL = "noreply@frontdesksuite.com"
-        FROM_SUBJECT = "Verify your email"
-
-        status, messages = imap.select("INBOX")
-        emails_count = 1
-        messages = int(messages[0])
-
         confirmation_code = None
+        with imaplib.IMAP4_SSL(self.imap_server) as imap:
+            imap.login(self.imap_email, self.imap_password)
+            imap.select("INBOX")
 
-        for i in range(messages, messages - emails_count, -1):
-            res, msg = imap.fetch(str(i), "(RFC822)")
-            for response in msg:
-                if isinstance(response, tuple):
-                    msg = email.message_from_bytes(response[1])
-                    subject, encoding = decode_header(msg["Subject"])[0]
-                    if isinstance(subject, bytes):
-                        subject = subject.decode(encoding)
-                    From, encoding = decode_header(msg.get("From"))[0]
-                    if isinstance(From, bytes):
-                        From = From.decode(encoding)
-                    if FROM_EMAIL in From and FROM_SUBJECT in subject:
-                        if msg.is_multipart():
-                            for part in msg.walk():
-                                try:
-                                    body = part.get_payload(decode=True).decode()
-                                except:
-                                    pass
-                        else:
-                            body = msg.get_payload(decode=True).decode()
-                        pattern = r"\b\d{4}\b"
-                        confirmation_code = re.findall(pattern, body)[0]
-        imap.close()
-        imap.logout()
+            FROM_EMAIL = "noreply@frontdesksuite.com"
+            FROM_SUBJECT = "Verify your email"
+
+            status, messages = imap.search(None, "UNSEEN")
+            email_ids = messages[0].split()
+
+            for email_id in email_ids:
+                _, msg = imap.fetch(email_id, "(RFC822)")
+                for response in msg:
+                    if isinstance(response, tuple):
+                        msg = email.message_from_bytes(response[1])
+                        subject, encoding = decode_header(msg["Subject"])[0]
+                        if isinstance(subject, bytes):
+                            subject = subject.decode(encoding)
+                        From, encoding = decode_header(msg.get("From"))[0]
+                        if isinstance(From, bytes):
+                            From = From.decode(encoding)
+                        if FROM_EMAIL in From and FROM_SUBJECT in subject:
+                            if msg.is_multipart():
+                                for part in msg.walk():
+                                    content_type = part.get_content_type()
+                                    if content_type == "text/plain":
+                                        body = part.get_payload(decode=True).decode()
+                                        pattern = r"\b\d{4}\b"
+                                        match = re.search(pattern, body)
+                                        if match:
+                                            confirmation_code = match.group(0)
+                                            break
+                            else:
+                                body = msg.get_payload(decode=True).decode()
+                                pattern = r"\b\d{4}\b"
+                                match = re.search(pattern, body)
+                                if match:
+                                    confirmation_code = match.group(0)
+                                    break
 
         return confirmation_code
