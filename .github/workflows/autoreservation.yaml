@@ -3,14 +3,12 @@ name: Autoreservation
 on:
   workflow_dispatch:
   schedule:
-    - cron: '58 21 * * *' # 21:58 UTC (5:58pm EST)
-    - cron: '57 22 * * *' # 22:57 UTC (6:57pm EST)
-    - cron: '58 22 * * *' # 22:58 UTC (6:58pm EST)
+    - cron: '57 21 * * *' # 21:57 UTC (5:57pm EST)
 
 jobs:
   autoreservation:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4

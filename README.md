@@ -1,23 +1,23 @@
-# ottawa-recreation-reservation
+# Ottawa Recreation Reservation
 
 [![Autoreservation](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/autoreservation.yaml/badge.svg)](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/autoreservation.yaml)
 
-Ottawa recreation reservation script
+Automate your Ottawa recreation reservations
 
 ## Motivation
 
-Due to the high demand for Volleyball games in Ottawa, players need to book slots immediately when the registration begins (2 days in advance at 6 PM).
+The demand for recreational activities, such as Volleyball games, in Ottawa is high. To secure a slot for these activities, players need to book immediately when the registration opens, two days in advance at 6 PM.
 
-For this purpose, I created this script that:
+To simplify this process and increase your chances of getting a reservation, I have created this script that:
 
-1. Automatically books a slot for events (not only Volleyball)
-2. Runs automatically by Cron with GitHub Actions
-3. Parses verification code from email using IMAP (if you use Gmail it won't work for you due to [their policy](https://support.google.com/accounts/answer/6010255)
-4. Sends the result of the booking to Telegram
+1. Automates the booking of slots for various events, including Volleyball
+2. Runs automatically using Cron with GitHub Actions, saving you time and effort
+3. Parses verification codes from emails using IMAP. *Please note that this feature doesn't work with Gmail due to their policies ([learn more](https://support.google.com/accounts/answer/6010255))*
+4. Sends the booking results to your Telegram account, keeping you updated
 
 ## Schedule configuration
 
-File [`schedule.json`](schedule.json) contains a list of facilities (for Adult Volleyball in my case) in this format:
+The file [`schedule.json`](schedule.json) contains a list of facilities for Adult Volleyball (or any other activity). Each facility entry follows this format:
 
 ```json
 {
@@ -35,24 +35,23 @@ File [`schedule.json`](schedule.json) contains a list of facilities (for Adult V
 }
 ```
 
-- `name (str)` - is the name of a facility
-- `home (str)` - facility's homepage where you can find a schedule
-- `link (str)` - booking page for a facility
-- `activity_button (str)` - the exact name of a button to be used for booking (be careful with that and use the proper name)
-- `schedule[] (list)` - list of schedules
-- `day (int)` - day of the week in ISO format (Monday - 1, Sunday - 7)
-- `starting_time (str)` - starting time for the activity
-- `follow (bool)` - if `true` then we want to book this facility, if `false` - skipping
-
+- `name (str)`: The name of the facility
+- `home (str)`: The homepage of the facility where you can find the schedule
+- `link (str)`: The booking page for the facility
+- `activity_button (str)`: The exact name of the button to be clicked for booking. Make sure to use the correct name
+- `schedule[] (list)`: A list of schedules
+- `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
+- `starting_time (str)`: The starting time for the activity
+- `follow (bool)`: If set to `true`, the script will attempt to book this facility. Set it to `false` to skip
 
 ## Prerequisites
 
-Before running the script, we have to prepare our environment variables with some confidential data.
+Before running the script, you need to set up some environment variables containing confidential data.
 
-There are two ways to do that: use a `.env` file or environment variables set manually (e.g. `export EMAIL=bla@blah.com`).
-The first approach is good for running the script manually on the local machine and the second is to run on CI/CD.
+There are two ways to accomplish this: using a `.env` file or manually setting environment variables (e.g., `export EMAIL=bla@blah.com`).
+The first approach is suitable for running the script manually on your local machine, while the second approach is intended for CI/CD environments.
 
-The content of `.env` (or env vars in your CI/CD system) should have these variables, they are mandatory:
+The content of the `.env` file (or the environment variables in your CI/CD system) should include the following mandatory variables:
 
 ```ini
 PHONE_NUMBER="234567890"
@@ -64,41 +63,41 @@ TELEGRAM_BOT_TOKEN=12345:AABBCCDDEEFFGG
 TELEGRAM_CHAT_ID=12345678
 ```
 
-### How to get a Telegram token and chat ID
+### How to Obtain a Telegram Token and Chat ID
 
-1. Go to [@BotFather](https://t.me/BotFather) and create `/newbot` (for example `ottawa_rec_reservation_bot`)
-2. You will receive a token like `111111111:ABCDE`
-3. Then go to [@MyTelegramID_bot](https://t.me/MyTelegramID_bot) and `/start` it
-4. You will receive your Telegram ID like `123456789`
+1. Go to [@BotFather](https://t.me/BotFather) and create a new bot using the `/newbot` command (e.g., `ottawa_rec_reservation_bot`)
+2. You will receive a token in the format `111111111:ABCDE`
+3. Next, go to [@MyTelegramID_bot](https://t.me/MyTelegramID_bot) and start the bot using the `/start` command
+4. You will receive your Telegram ID in the format `123456789`
 
-## Manual script usage
+## Manual Script Usage
 
-1. Ensure that you installed [`Python`](https://www.python.org/downloads/) on your machine
-2. Go to the `src/` directory, and copy-paste file called [`.env-sample`](src/.env-sample) to `.env`
-3. Edit the `src/.env` according to your credentials
-4. Install required packages:
+1. Ensure that you have installed [`Python`](https://www.python.org/downloads/) on your machine
+2. Navigate to the `src/` directory and make a copy of the file [`src/.env-sample`](src/.env-sample) named `src/.env`
+3. Edit the contents of `src/.env` to match your credentials
+4. Install the required packages by running the following command:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-5. Run the script:
+5. Run the script using the following command:
 
 ```bash
 ./src/main.py
 ```
 
-## Script usage with GitHub Actions
+## Script Usage with GitHub Actions
 
-Instead of running the script on a local machine, we can do that automatically with the Cron and GitHub Actions.
+Instead of running the script on your local machine, you can automate it using GitHub Actions and Cron.
 
-The idea is to run it periodically to be able to make a booking immediately.
+The script can be scheduled to run periodically, increasing your chances of getting a reservation immediately.
 
-1. Fork this repo
-2. Go to `Settings - Secrets and variables - Actions` and set all needed secrets from the `.env-sample` file
+1. Fork this repository
+2. Go to `Settings - Secrets and variables - Actions` in your forked repository and set all the required secrets from the `src/.env` file.
 
-![](img/secrets.png)
+![Setting repository secrets](img/secrets.png)
 
-3. You can see the result in the Actions tab on GitHub
+3. You can monitor the script's execution and results in the Actions tab of your repository
 
-*I've scheduled a script run at 5:58 pm due to the [high load period](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) on every hour in GitHub Actions*
+*The script has been scheduled to run at 5:57 PM to avoid high load periods on every hour in GitHub Actions.*
