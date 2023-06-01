@@ -1,0 +1,28 @@
+name: Autoreservation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '59 21 * * *' # 21:59 UTC (5:59pm EST)
+
+jobs:
+  autoreservation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: 'pip'
+      - run: sudo timedatectl set-timezone America/Toronto
+      - run: pip install -r requirements.txt
+      - run: ./src/reservation.py
+        env:
+          PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
+          IMAP_EMAIL: ${{ secrets.IMAP_EMAIL }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          IMAP_SERVER: ${{ secrets.IMAP_SERVER }}
+          NAME: ${{ secrets.NAME }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
