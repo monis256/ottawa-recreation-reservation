@@ -42,7 +42,7 @@ class ConfirmationCodeExtractor:
         Retrieves the confirmation code from the latest email.
 
         Returns:
-        - confirmation_code (str): The extracted confirmation code, or None if not found.
+        - confirmation_code (str): The extracted confirmation code.
         """
 
         confirmation_code = None
@@ -72,7 +72,8 @@ class ConfirmationCodeExtractor:
                                 for part in msg.walk():
                                     content_type = part.get_content_type()
                                     if content_type == "text/plain":
-                                        body = part.get_payload(decode=True).decode()
+                                        body = part.get_payload(decode=True)\
+                                            .decode()
                                         pattern = r"\b\d{4}\b"
                                         match = re.search(pattern, body)
                                         if match:

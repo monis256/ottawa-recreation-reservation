@@ -15,14 +15,14 @@ class EnvVars:
     - imap_password (str): The email password.
     - imap_server (str): The email IMAP server.
     - name (str): Your name for reservation.
-    - telegram_bot_token (str): The Telegram bot token used to authenticate requests.
+    - telegram_bot_token (str): The Telegram bot token used to authenticate.
     - telegram_chat_id (str): The chat ID of the configured Telegram chat.
 
     Methods:
     - check_env_vars(required_vars: Tuple[str, ...]) -> Dict[str, str]:
         Checks whether the required environment variables are set.
     - __init__(self, env_vars: Dict[str, str]):
-        Initializes an instance of the EnvVars class with environment variables.
+        Initializes an instance of the EnvVars class with environment vars.
     """
     REQUIRED_VARS = (
         'PHONE_NUMBER',
@@ -36,10 +36,10 @@ class EnvVars:
 
     def __init__(self, env_vars: Dict[str, str]):
         """
-        Initializes an instance of the EnvVars class with environment variables.
+        Initializes an instance of the EnvVars class with environment vars.
 
         Args:
-        - env_vars (Dict[str, str]): A dictionary containing environment variable names and values.
+        - env_vars (Dict[str, str]): A dictionary containing env vars.
 
         Returns:
         - None
@@ -58,10 +58,10 @@ class EnvVars:
         Checks whether the required environment variables are set.
 
         Args:
-        - required_vars (Tuple[str, ...]): A tuple of environment variable names that are required.
+        - required_vars (Tuple[str, ...]): A tuple of required env var names.
 
         Returns:
-        - env_vars (Dict[str, str]): A dictionary containing environment variable names and values.
+        - env_vars (Dict[str, str]): A dictionary containing env vars.
         """
         load_dotenv()
         logging.basicConfig(level=logging.INFO)

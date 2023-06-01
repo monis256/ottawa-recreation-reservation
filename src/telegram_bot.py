@@ -2,15 +2,17 @@ import logging
 import requests
 from typing import Union
 
+TG_API_URL = "https://api.telegram.org/bot"
+
 
 class TelegramBot:
     """
     A class that interacts with the Telegram API to send messages and photos.
 
     Attributes:
-    - telegram_bot_token (str): The Telegram bot token used to authenticate requests.
+    - telegram_bot_token (str): The Telegram bot token used to authenticate.
     - telegram_chat_id (int): The chat ID of the configured Telegram chat.
-    - session (requests.Session): The requests session used to send API requests.
+    - session (requests.Session): The requests session used to send requests.
 
     Methods:
     - send_message(text: str) -> Union[requests.Response, None]:
@@ -20,7 +22,7 @@ class TelegramBot:
     """
     def __init__(self, env_var):
         """
-        Initialize a TelegramBot object with the necessary env vars and requests session.
+        Initialize a TelegramBot object with the env vars and requests session.
         """
         self.telegram_bot_token: str = env_var.telegram_bot_token
         self.telegram_chat_id: int = env_var.telegram_chat_id
@@ -35,9 +37,9 @@ class TelegramBot:
             text (str): The text message to send.
 
         Returns:
-            The response object from the Telegram API if successful, None otherwise.
+            The response object from the Telegram API if successful.
         """
-        url: str = f'https://api.telegram.org/bot{self.telegram_bot_token}/sendMessage'
+        url: str = f'{TG_API_URL}{self.telegram_bot_token}/sendMessage'
         payload: dict = {
             'chat_id': self.telegram_chat_id,
             'text': text
@@ -58,15 +60,19 @@ class TelegramBot:
             photo_file (file): The file object of the photo to send.
 
         Returns:
-            The response object from the Telegram API if successful, None otherwise.
+            The response object from the Telegram API if successful.
         """
-        url: str = f'https://api.telegram.org/bot{self.telegram_bot_token}/sendPhoto'
+        url: str = f'{TG_API_URL}{self.telegram_bot_token}/sendPhoto'
         payload: dict = {
             'chat_id': self.telegram_chat_id
         }
         files = {'photo': photo_file}
         try:
-            response: requests.Response = self.session.post(url, data=payload, files=files)
+            response: requests.Response = self.session.post(
+                url,
+                data=payload,
+                files=files
+            )
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:
