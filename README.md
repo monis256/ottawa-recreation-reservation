@@ -74,8 +74,8 @@ TELEGRAM_CHAT_ID=12345678
 
 ## Manual Script Usage
 
-1. Ensure that you have installed [`Python`](https://www.python.org/downloads/) on your machine
-2. Navigate to the `src/` directory and make a copy of the file [`src/.env-sample`](src/.env-sample) named `src/.env`
+1. Ensure that you have installed [Python](https://www.python.org/downloads/) on your machine
+2. Make a copy of the file [`src/.env-sample`](src/.env-sample) named `src/.env`
 3. Edit the contents of `src/.env` to match your credentials
 4. Install the required packages by running the following command:
 
@@ -96,10 +96,10 @@ Instead of running the script on your local machine, you can automate it using G
 The script can be scheduled to run periodically, increasing your chances of getting a reservation immediately.
 
 1. Fork this repository
-2. Go to `Settings - Secrets and variables - Actions` in your forked repository and set all the required secrets from the `src/.env` file.
+2. Go to `Settings - Secrets and variables - Actions` in your forked repository and set all the required secrets from the `src/.env` file
 
 ![Setting repository secrets](img/secrets.png)
 
 3. You can monitor the script's execution and results in the Actions tab of your repository
 
-*The script has been scheduled to run at 5:57 PM to avoid high load periods on every hour in GitHub Actions.*
+*The script has been scheduled to run at 5:57 PM to avoid high load periods on every hour in GitHub Actions*
