@@ -4,12 +4,10 @@ Ottawa recreation reservation script
 
 ## Intro
 
-This script allows making sports reservations automatically.
-It runs with Python, schedules with GitHub Actions and sends notifications to Telegram.
+The script allows making sports reservations automatically.
+It's powered by Python, schedules with GitHub Actions and sends notifications to Telegram.
 
 Registration for drop-in events begins 2 days in advance at 6 PM so I use a cronjob to run the script periodically at this time.
-
-There are two ways to use the script: *manually* or *automatically* (using local cron or some CI/CD tool, like GitHub Actions).
 
 File [`schedule.json`](schedule.json) contains a list of facilities (for Adult Volleyball in my case) in this format:
 
@@ -31,6 +29,8 @@ File [`schedule.json`](schedule.json) contains a list of facilities (for Adult V
 
 ## Prerequisites
 
+*For getting a verification code from my email I use IMAP, if you are the owner of Gmail mailbox it won't work for you according to the [new Google's policy](https://support.google.com/accounts/answer/6010255)*
+
 Before running the script, we have to prepare our environment variables with some confidential data.
 
 There are two ways to do that: use a `.env` file or environment variables set manually (e.g. `export EMAIL=bla@blah.com`).
@@ -40,13 +40,10 @@ The content of `.env` (or env vars in your CI/CD system) should have these varia
 
 ```ini
 PHONE_NUMBER="234567890"
-EMAIL="my-email@gmail.com"
+IMAP_EMAIL="my-email@gmail.com"
+IMAP_PASSWORD="my-password"
+IMAP_SERVER="mail.myserver.com"
 NAME="John Doe"
-```
-
-In case you want to receive a message in Telegram, set the Telegram token and chat ID:
-
-```ini
 TELEGRAM_BOT_TOKEN=12345:AABBCCDDEEFFGG
 TELEGRAM_CHAT_ID=12345678
 ```
@@ -80,7 +77,7 @@ pip install -r requirements.txt
 
 Instead of running the script on a local machine, we can do that automatically with the Cron and GitHub Actions.
 
-The idea is to run it periodically (for example every hour during the daytime) to be able to react immediately.
+The idea is to run it periodically (for example every day at 5:59 PM) to be able to make a booking immediately.
 
 1. Fork this repo
 2. Go to `Settings - Secrets and variables - Actions` and set all needed secrets from the `.env-sample` file
@@ -89,4 +86,4 @@ The idea is to run it periodically (for example every hour during the daytime) t
 
 3. You can see the result in the Actions tab on GitHub
 
-*I scheduled a script run at 5:59 pm due to the [high load period](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) on every hour in GitHub Actions*
+*I've scheduled a script run at 5:59 pm due to the [high load period](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) on every hour in GitHub Actions*

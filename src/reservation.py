@@ -3,6 +3,7 @@
 import datetime
 import json
 import logging
+import os
 import sys
 import time
 from selenium import webdriver
@@ -19,10 +20,11 @@ env_vars = EnvVars.check_env_vars(EnvVars.REQUIRED_VARS)
 env_var = EnvVars(env_vars)
 telegram_bot = TelegramBot(env_var)
 
-SCHEDULE_JSON_PATH = "../schedule.json"
-# SCHEDULE_JSON_PATH = "../schedule-test.json"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+schedule_json_path = os.path.join(script_dir, '..', 'schedule.json')
+
 GROUP_SIZE = 1
-TARGET_RUN_TIME = "22:00:00"  # UTC (6 pm EST)
+TARGET_RUN_TIME = "18:00:00"
 
 
 def find_slots(json_file_path):
@@ -31,7 +33,6 @@ def find_slots(json_file_path):
 
     logging.info('Looking for available slots...')
     current_date = datetime.date.today()
-    # current_date = datetime.date.today() - datetime.timedelta(days=1)
     future_weekday = current_date + datetime.timedelta(days=2)
     future_weekday_iso = future_weekday.isoweekday()
 
@@ -145,7 +146,7 @@ def main():
     logging.getLogger('WDM').setLevel(logging.ERROR)
 
     try:
-        available_slots = find_slots(SCHEDULE_JSON_PATH)
+        available_slots = find_slots(schedule_json_path)
 
         if TARGET_RUN_TIME:
             current_time = time.strftime("%H:%M:%S")

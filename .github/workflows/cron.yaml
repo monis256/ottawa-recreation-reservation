@@ -14,11 +14,12 @@ jobs:
           python-version: 3.11
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - run: exit 1
       - run: ./src/reservation.py
         env:
           PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
-          EMAIL: ${{ secrets.EMAIL }}
+          IMAP_EMAIL: ${{ secrets.IMAP_EMAIL }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          IMAP_SERVER: ${{ secrets.IMAP_SERVER }}
           NAME: ${{ secrets.NAME }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

@@ -91,12 +91,12 @@
         {
           "day_of_week": 6,
           "starting_time": "6:00 PM",
-          "follow": false
+          "follow": true
         },
         {
           "day_of_week": 6,
           "starting_time": "7:00 PM",
-          "follow": false
+          "follow": true
         }
       ]
     }
