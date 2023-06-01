@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from env_vars import EnvVars
-from email_confirmation import get_confirmation_code
+from email_confirmation import ConfirmationCodeExtractor
 from telegram_bot import TelegramBot
 
 # Initialize environment variables and Telegram bot
@@ -19,7 +19,7 @@ env_vars = EnvVars.check_env_vars(EnvVars.REQUIRED_VARS)
 env_var = EnvVars(env_vars)
 telegram_bot = TelegramBot(env_var)
 
-SCHEDULE_JSON_PATH = "../schedule-test.json"
+SCHEDULE_JSON_PATH = "../schedule.json"
 GROUP_SIZE = 1
 
 
@@ -28,7 +28,7 @@ def find_slots(json_file_path):
         data = json.load(file)
 
     logging.info('Looking for available slots...')
-    current_date = datetime.date.today() # - datetime.timedelta(days=1)
+    current_date = datetime.date.today() #- datetime.timedelta(days=1)
     future_weekday = current_date + datetime.timedelta(days=2)
     future_weekday_iso = future_weekday.isoweekday()
 
@@ -79,8 +79,15 @@ def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
         driver.get(recreation_details["link"])
         driver.find_element(By.XPATH, "//div[text()='" + recreation_details["activity_button"] + "']").click()
 
-        # If there is a free slot
         reservation_count_input = driver.find_element(By.ID, "reservationCount")
+        # When page doesn't have dialogue 'How many people in your group?'
+        if reservation_count_input.get_attribute("type") == "hidden":
+            message = f'❌ No slots available in {recreation_name} at {recreation_slot["starting_time"]} ({recreation_details["activity_button"]})'
+            logging.error(message)
+            telegram_bot.send_message(message)
+            telegram_bot.send_photo(driver.get_screenshot_as_png())
+            return False
+
         reservation_count_input.clear()
         reservation_count_input.send_keys(GROUP_SIZE)
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
@@ -98,7 +105,7 @@ def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
         name_input = driver.find_element(By.ID, "field2021")
         name_input.clear()
         name_input.send_keys(env_var.name)
-        time.sleep(2)
+        time.sleep(1)
 
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
@@ -106,9 +113,10 @@ def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
         while confirmation_code is None:
             time.sleep(1)
             logging.info("Waiting for a code to verify booking...")
-            confirmation_code = get_confirmation_code(env_var.imap_server, env_var.imap_email, env_var.imap_password)
+            extractor = ConfirmationCodeExtractor(env_var.imap_server, env_var.imap_email, env_var.imap_password)
+            confirmation_code = extractor.get_confirmation_code()
 
-        logging.info('✅ A verification code is %s', confirmation_code)
+        logging.info('✅ Verification code is %s', confirmation_code)
 
         code_input = driver.find_element(By.ID, "code")
         code_input.clear()
@@ -121,8 +129,11 @@ def reserve_slots(driver, recreation_name, recreation_details, recreation_slot):
         telegram_bot.send_photo(driver.get_screenshot_as_png())
 
     except Exception as err:
-        logging.error('❌ Exception: %s', err)
+        message = f'❌ Failed to book a slot in {recreation_name} at {recreation_slot["starting_time"]} ({recreation_details["activity_button"]}), exception: {err}'
+        logging.error(message)
+        telegram_bot.send_message(message)
         telegram_bot.send_photo(driver.get_screenshot_as_png())
+
 
 def main():
 
@@ -133,10 +144,11 @@ def main():
     try:
         available_slots = find_slots(SCHEDULE_JSON_PATH)
 
-        print("")
+        #print("")
+        # TODO: wait until the 6:00 and start
 
         chrome_options = Options()
-        chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--headless")
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
 

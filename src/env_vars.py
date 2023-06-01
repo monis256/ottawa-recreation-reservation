@@ -11,7 +11,7 @@ class EnvVars:
 
     Attributes:
     - phone_number (str): The phone number.
-    - imap_email (str): The email address to get confirmation to.
+    - imap_email (str): The email address.
     - imap_password (str): The email password.
     - imap_server (str): The email IMAP server.
     - name (str): Your name for reservation.
