@@ -24,7 +24,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 schedule_json_path = os.path.join(script_dir, '..', 'schedule.json')
 
 GROUP_SIZE = 1
-#TARGET_RUN_TIME = "18:00:00"
+TARGET_RUN_TIME = "18:00:01"
 
 
 def find_slots(json_file_path):
@@ -148,7 +148,7 @@ def main():
     try:
         available_slots = find_slots(schedule_json_path)
 
-        if TARGET_RUN_TIME:
+        if TARGET_RUN_TIME == "18:00:00":
             current_time = time.strftime("%H:%M:%S")
             while current_time < TARGET_RUN_TIME:
                 time.sleep(1)
@@ -156,7 +156,7 @@ def main():
                 logging.info("Waiting for a %s to start booking, current time %s...", TARGET_RUN_TIME, current_time)
 
         chrome_options = Options()
-        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--headless")
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
 

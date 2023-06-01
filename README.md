@@ -1,5 +1,7 @@
 # ottawa-recreation-reservation
 
+[![Autoreservation](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/autoreservation.yaml/badge.svg)](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/autoreservation.yaml)
+
 Ottawa recreation reservation script
 
 ## Intro
