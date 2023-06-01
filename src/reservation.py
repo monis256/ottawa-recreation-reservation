@@ -22,6 +22,7 @@ telegram_bot = TelegramBot(env_var)
 SCHEDULE_JSON_PATH = "../schedule.json"
 # SCHEDULE_JSON_PATH = "../schedule-test.json"
 GROUP_SIZE = 1
+TARGET_RUN_TIME = "22:00:00"  # UTC (6 pm EST)
 
 
 def find_slots(json_file_path):
@@ -146,8 +147,12 @@ def main():
     try:
         available_slots = find_slots(SCHEDULE_JSON_PATH)
 
-        #print("")
-        # TODO: wait until the 6:00 and start
+        if TARGET_RUN_TIME:
+            current_time = time.strftime("%H:%M:%S")
+            while current_time < TARGET_RUN_TIME:
+                time.sleep(1)
+                current_time = time.strftime("%H:%M:%S")
+                logging.info("Waiting for a %s to start booking, current time %s...", TARGET_RUN_TIME, current_time)
 
         chrome_options = Options()
         # chrome_options.add_argument("--headless")
