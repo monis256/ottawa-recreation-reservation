@@ -1,6 +1,7 @@
 name: Cron reservation
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '59 21 * * *' # 21:59 UTC (5:59pm EST)
 
