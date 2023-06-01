@@ -4,12 +4,18 @@
 
 Ottawa recreation reservation script
 
-## Intro
+## Motivation
 
-The script allows making sports reservations automatically.
-It's powered by Python, schedules with GitHub Actions and sends notifications to Telegram.
+Due to the high demand for Volleyball games in Ottawa, players need to book slots immediately when the registration begins (2 days in advance at 6 PM).
 
-Registration for drop-in events begins 2 days in advance at 6 PM so I use a cronjob to run the script periodically at this time.
+For this purpose, I created this script that:
+
+1. Automatically books a slot for events (not only Volleyball)
+2. Runs automatically by Cron with GitHub Actions
+3. Parses verification code from email using IMAP (if you use Gmail it won't work for you due to [their policy](https://support.google.com/accounts/answer/6010255)
+4. Sends the result of the booking to Telegram
+
+## Schedule configuration
 
 File [`schedule.json`](schedule.json) contains a list of facilities (for Adult Volleyball in my case) in this format:
 
@@ -29,9 +35,17 @@ File [`schedule.json`](schedule.json) contains a list of facilities (for Adult V
 }
 ```
 
-## Prerequisites
+- `name (str)` - is the name of a facility
+- `home (str)` - facility's homepage where you can find a schedule
+- `link (str)` - booking page for a facility
+- `activity_button (str)` - the exact name of a button to be used for booking (be careful with that and use the proper name)
+- `schedule[] (list)` - list of schedules
+- `day (int)` - day of the week in ISO format (Monday - 1, Sunday - 7)
+- `starting_time (str)` - starting time for the activity
+- `follow (bool)` - if `true` then we want to book this facility, if `false` - skipping
 
-*For getting a verification code from my email I use IMAP, if you are the owner of Gmail mailbox it won't work for you according to the [new Google's policy](https://support.google.com/accounts/answer/6010255)*
+
+## Prerequisites
 
 Before running the script, we have to prepare our environment variables with some confidential data.
 
@@ -72,14 +86,13 @@ pip install -r requirements.txt
 
 ```bash
 ./src/main.py
-...
 ```
 
 ## Script usage with GitHub Actions
 
 Instead of running the script on a local machine, we can do that automatically with the Cron and GitHub Actions.
 
-The idea is to run it periodically (for example every day at 5:59 PM) to be able to make a booking immediately.
+The idea is to run it periodically to be able to make a booking immediately.
 
 1. Fork this repo
 2. Go to `Settings - Secrets and variables - Actions` and set all needed secrets from the `.env-sample` file
@@ -88,4 +101,4 @@ The idea is to run it periodically (for example every day at 5:59 PM) to be able
 
 3. You can see the result in the Actions tab on GitHub
 
-*I've scheduled a script run at 5:59 pm due to the [high load period](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) on every hour in GitHub Actions*
+*I've scheduled a script run at 5:58 pm due to the [high load period](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) on every hour in GitHub Actions*
