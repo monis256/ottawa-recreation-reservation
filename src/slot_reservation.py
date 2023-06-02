@@ -1,46 +1,63 @@
 import logging
 import time
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from confirmation_code_extractor import ConfirmationCodeExtractor
 from telegram_bot import TelegramBot
 from env_vars import EnvVars
+from typing import Any
+
 
 GROUP_SIZE = 1
+MAX_RETRIES = 3
 
 
 class SlotReservation:
-    def __init__(self):
+    """
+    A class that handles the reservation of slots in a recreation facility.
+
+    Attributes:
+    - env_var (EnvVars): An instance of the EnvVars class containing env vars.
+    - telegram_bot (TelegramBot): An instance of the TelegramBot class
+        for sending messages and photos.
+
+    Methods:
+    - reserve_slots(driver, rec_name, rec_details, rec_slot):
+        Reserves slots in the given recreation facility.
+    """
+
+    def __init__(self) -> None:
         """
-        Initializes SlotReservation class.
+        Initializes a SlotReservation object.
 
         Initializes environment variables and Telegram bot.
         """
         env_vars = EnvVars.check_env_vars(EnvVars.REQUIRED_VARS)
-        self.env_var = EnvVars(env_vars)
-        self.telegram_bot = TelegramBot(self.env_var)
+        self.env_var: EnvVars = EnvVars(env_vars)
+        self.telegram_bot: TelegramBot = TelegramBot(self.env_var)
 
-    def reserve_slots(self, driver, recreation_name,
-                      recreation_details, recreation_slot):
+    def reserve_slots(self, driver: Any, rec_name: str,
+                      rec_details: dict, rec_slot: dict) -> None:
         """
         Reserves slots in the given recreation facility.
 
         Args:
             driver: WebDriver object for interacting with the web browser.
-            recreation_name (str): Name of the recreation facility.
-            recreation_details (dict): Details of the recreation facility.
-            recreation_slot (dict): Details of the slot to be reserved.
+            rec_name (str): Name of the recreation facility.
+            rec_details (dict): Details of the recreation facility.
+            rec_slot (dict): Details of the slot to be reserved.
         """
         try:
-            message = (
-                f'Booking slot in {recreation_name} at '
-                f'{recreation_slot["starting_time"]}...'
+            message: str = (
+                f'Booking slot in {rec_name} at '
+                f'{rec_slot["starting_time"]}...'
             )
             logging.info(message)
 
-            driver.get(recreation_details["link"])
+            driver.get(rec_details["link"])
             driver.find_element(
                 By.XPATH,
-                "//div[text()='" + recreation_details["activity_button"] + "']"
+                "//div[text()='" + rec_details["activity_button"] + "']"
             ).click()
 
             reservation_count_input = driver.find_element(
@@ -49,9 +66,9 @@ class SlotReservation:
             # When page doesn't have dialogue 'How many people in your group?'
             if reservation_count_input.get_attribute("type") == "hidden":
                 message = (
-                    f'❌ No slots available in {recreation_name} at '
-                    f'{recreation_slot["starting_time"]} '
-                    f'({recreation_details["activity_button"]})'
+                    f'❌ No slots available in {rec_name} at '
+                    f'{rec_slot["starting_time"]} '
+                    f'({rec_details["activity_button"]})'
                 )
                 logging.error(message)
                 self.telegram_bot.send_message(message)
@@ -66,7 +83,7 @@ class SlotReservation:
             driver.find_element(
                 By.XPATH,
                 "//a[contains(span[@class='" + class_name + "'], '" +
-                recreation_slot["starting_time"] + "')]"
+                rec_slot["starting_time"] + "')]"
             ).click()
 
             telephone_input = driver.find_element(By.ID, "telephone")
@@ -83,7 +100,23 @@ class SlotReservation:
             time.sleep(1)
 
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
-            # TODO: handle retry text and press retry button
+            retries = 0
+            while retries < MAX_RETRIES:
+                try:
+                    retry_text_element = driver.find_element(
+                        By.XPATH, "//span[text()='Retry']"
+                    )
+                    if retry_text_element.is_displayed():
+                        retries += 1
+                        logging.warning("Retry attempt %d", retries)
+                        driver.find_element(
+                            By.CLASS_NAME, "mdc-button__ripple"
+                        ).click()
+                        time.sleep(1)
+                    else:
+                        break
+                except NoSuchElementException:
+                    break
 
             confirmation_code = None
             while confirmation_code is None:
@@ -104,9 +137,9 @@ class SlotReservation:
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
             message = (
-                f'✅ Successfully booked a slot in {recreation_name} '
-                f'at {recreation_slot["starting_time"]} '
-                f'({recreation_details["activity_button"]})'
+                f'✅ Successfully booked a slot in {rec_name} '
+                f'at {rec_slot["starting_time"]} '
+                f'({rec_details["activity_button"]})'
             )
             logging.info(message)
             self.telegram_bot.send_message(message)
@@ -114,9 +147,9 @@ class SlotReservation:
 
         except Exception as err:
             message = (
-                f'❌ Failed to book a slot in {recreation_name} '
-                f'at {recreation_slot["starting_time"]} '
-                f'({recreation_details["activity_button"]}), exception: {err}'
+                f'❌ Failed to book a slot in {rec_name} '
+                f'at {rec_slot["starting_time"]} '
+                f'({rec_details["activity_button"]}), exception: {err}'
             )
             logging.error(message)
             self.telegram_bot.send_message(message)

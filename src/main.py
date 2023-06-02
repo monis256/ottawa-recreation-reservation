@@ -6,6 +6,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from typing import Dict, Any
 from webdriver_manager.chrome import ChromeDriverManager
 from slot_finder import SlotFinder
 from slot_reservation import SlotReservation
@@ -16,18 +17,23 @@ TARGET_RUN_TIME = "18:00:00"
 class SlotBookingApp:
     """
     Class representing a slot booking application.
-    """
 
-    def __init__(self):
+    Methods:
+    - __init__():
+        Initialize the SlotBookingApp instance.
+    - run():
+        Run the slot booking application.
+    """
+    def __init__(self) -> None:
         """
         Initialize the SlotBookingApp instance.
         """
-        self.script_dir = os.path.dirname(os.path.abspath(__file__))
-        self.schedule_json_path = os.path.join(
+        self.script_dir: str = os.path.dirname(os.path.abspath(__file__))
+        self.schedule_json_path: str = os.path.join(
             self.script_dir, '..', 'schedule.json'
         )
 
-    def run(self):
+    def run(self) -> None:
         """
         Run the slot booking application.
         """
@@ -35,43 +41,42 @@ class SlotBookingApp:
         logging.getLogger('WDM').setLevel(logging.ERROR)
 
         try:
-            finder = SlotFinder(self.schedule_json_path)
-            available_slots = finder.find_slots()
+            finder: SlotFinder = SlotFinder(self.schedule_json_path)
+            available_slots: Dict[str, Dict[str, Any]] = finder.find_slots()
 
             if TARGET_RUN_TIME == "18:00:00":
-                current_time = time.strftime("%H:%M:%S")
+                current_time: str = time.strftime("%H:%M:%S")
                 while current_time < TARGET_RUN_TIME:
                     time.sleep(2)
                     current_time = time.strftime("%H:%M:%S")
-                    message = (
+                    message: str = (
                         f'Waiting for {TARGET_RUN_TIME} to '
                         f'start booking, current time {current_time}...'
                     )
                     logging.info(message)
 
-            chrome_options = Options()
+            chrome_options: Options = Options()
             chrome_options.add_argument("--headless")
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=chrome_options)
+            service: Service = Service(ChromeDriverManager().install())
+            driver: webdriver.Chrome = webdriver.Chrome(service=service,
+                                                        options=chrome_options)
 
-            reservation = SlotReservation()
+            reservation: SlotReservation = SlotReservation()
 
-            for recreation_name, recreation_details in available_slots.items():
-                for recreation_slot in recreation_details["slots"]:
-                    reservation.reserve_slots(driver,
-                                              recreation_name,
-                                              recreation_details,
-                                              recreation_slot)
+            for rec_name, rec_details in available_slots.items():
+                for rec_slot in rec_details["slots"]:
+                    reservation.reserve_slots(driver, rec_name,
+                                              rec_details, rec_slot)
 
         except Exception as err:
             logging.error('❌ Exception: %s', err)
 
 
-def main():
+def main() -> None:
     """
     Entry point for the application script.
     """
-    slot_booking_app = SlotBookingApp()
+    slot_booking_app: SlotBookingApp = SlotBookingApp()
     slot_booking_app.run()
 
 

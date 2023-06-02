@@ -23,6 +23,8 @@ class TelegramBot:
     def __init__(self, env_var):
         """
         Initialize a TelegramBot object with the env vars and requests session.
+        Args:
+            env_var: Object with the environment variables.
         """
         self.telegram_bot_token: str = env_var.telegram_bot_token
         self.telegram_chat_id: int = env_var.telegram_chat_id
