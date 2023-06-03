@@ -49,7 +49,7 @@ class SlotRegistrationApp:
             if CRON_MODE:
                 current_time: str = time.strftime("%H:%M:%S")
                 while current_time < TARGET_RUN_TIME:
-                    time.sleep(2)
+                    time.sleep(3)
                     current_time = time.strftime("%H:%M:%S")
                     message: str = (
                         f'Waiting for {TARGET_RUN_TIME} to '

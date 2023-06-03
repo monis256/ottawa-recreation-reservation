@@ -7,7 +7,6 @@ from telegram_bot import TelegramBot
 from env_vars import EnvVars
 from typing import Any
 
-
 GROUP_SIZE = 1
 MAX_RETRIES = 3
 
@@ -49,7 +48,7 @@ class SlotReservation:
         """
         try:
             message: str = (
-                f'Booking slot in {rec_name} at '
+                f'Registering slot in {rec_name} at '
                 f'{rec_slot["starting_time"]}...'
             )
             logging.info(message)
@@ -121,7 +120,7 @@ class SlotReservation:
             confirmation_code = None
             while confirmation_code is None:
                 time.sleep(1)
-                logging.info("Waiting for a code to verify booking...")
+                logging.info("Waiting for a code to verify registration...")
                 extractor = ConfirmationCodeExtractor(
                     self.env_var.imap_server,
                     self.env_var.imap_email,
