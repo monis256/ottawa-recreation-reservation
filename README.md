@@ -102,4 +102,4 @@ The script can be scheduled to run periodically, increasing your chances of gett
 
 3. You can monitor the script's execution and results in the Actions tab of your repository
 
-*The script has been scheduled to run at 5:56 PM to avoid [high load periods](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) in the beginning of every hour in GitHub Actions*
+*The script has been scheduled to run at 5:55 PM to avoid [high load periods](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) at the beginning of every hour in GitHub Actions*
