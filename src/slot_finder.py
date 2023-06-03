@@ -32,7 +32,7 @@ class SlotFinder:
         Returns:
             dict: Dictionary containing available slots grouped by facility.
         """
-        with open(self.json_file_path) as file:
+        with open(self.json_file_path, encoding="utf-8") as file:
             data: Dict[str, Any] = json.load(file)
 
         logging.info('Looking for available slots...')

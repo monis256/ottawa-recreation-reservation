@@ -2,6 +2,7 @@ import imaplib
 import email
 import re
 from email.header import decode_header
+from constant import FROM_EMAIL, FROM_SUBJECT
 
 
 class ConfirmationCodeExtractor:
@@ -49,10 +50,6 @@ class ConfirmationCodeExtractor:
         with imaplib.IMAP4_SSL(self.imap_server) as imap:
             imap.login(self.imap_email, self.imap_password)
             imap.select("INBOX")
-
-            FROM_EMAIL = "noreply@frontdesksuite.com"
-            FROM_SUBJECT = "Verify your email"
-
             status, messages = imap.search(None, "UNSEEN")
             email_ids = messages[0].split()
 
@@ -64,10 +61,12 @@ class ConfirmationCodeExtractor:
                         subject, encoding = decode_header(msg["Subject"])[0]
                         if isinstance(subject, bytes):
                             subject = subject.decode(encoding)
-                        From, encoding = decode_header(msg.get("From"))[0]
-                        if isinstance(From, bytes):
-                            From = From.decode(encoding)
-                        if FROM_EMAIL in From and FROM_SUBJECT in subject:
+                        email_from, encoding = \
+                            decode_header(msg.get("From"))[0]
+                        if isinstance(email_from, bytes):
+                            email_from = email_from.decode(encoding)
+                        if FROM_EMAIL in email_from and \
+                           FROM_SUBJECT in subject:
                             if msg.is_multipart():
                                 for part in msg.walk():
                                     content_type = part.get_content_type()

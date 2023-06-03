@@ -1,8 +1,7 @@
 import logging
-import requests
 from typing import Union
-
-TG_API_URL = "https://api.telegram.org/bot"
+import requests
+from constant import TG_API_URL
 
 
 class TelegramBot:

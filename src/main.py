@@ -3,17 +3,14 @@
 import logging
 import os
 import time
+from typing import Dict, Any
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from typing import Dict, Any
 from webdriver_manager.chrome import ChromeDriverManager
 from slot_finder import SlotFinder
 from slot_reservation import SlotReservation
-
-TARGET_RUN_TIME = "18:00:00"  # Time when the registration begins
-SCHEDULE_JSON = "schedule.json"  # Name of json file with the schedule
-CRON_MODE = True  # Set to False in case of manual run
+from constant import TARGET_RUN_TIME, SCHEDULE_JSON, CRON_MODE, CHROME_HEADLESS
 
 
 class SlotRegistrationApp:
@@ -58,7 +55,8 @@ class SlotRegistrationApp:
                     logging.info(message)
 
             chrome_options: Options = Options()
-            chrome_options.add_argument("--headless")
+            if CHROME_HEADLESS:
+                chrome_options.add_argument("--headless")
             service: Service = Service(ChromeDriverManager().install())
             driver: webdriver.Chrome = webdriver.Chrome(service=service,
                                                         options=chrome_options)

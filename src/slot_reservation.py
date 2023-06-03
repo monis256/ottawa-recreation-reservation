@@ -1,14 +1,12 @@
 import logging
 import time
+from typing import Any
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from confirmation_code_extractor import ConfirmationCodeExtractor
 from telegram_bot import TelegramBot
 from env_vars import EnvVars
-from typing import Any
-
-GROUP_SIZE = 1
-MAX_RETRIES = 3
+from constant import GROUP_SIZE, MAX_RETRIES
 
 
 class SlotReservation:
@@ -155,3 +153,4 @@ class SlotReservation:
             logging.error(message)
             self.telegram_bot.send_message(message)
             self.telegram_bot.send_photo(driver.get_screenshot_as_png())
+        return None
