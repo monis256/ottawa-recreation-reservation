@@ -10,12 +10,12 @@ The demand for recreational activities, such as Volleyball games, in Ottawa is h
 
 To simplify this process and increase your chances of getting a reservation, I have created this script that:
 
-1. Automates the booking of slots for various events, including Volleyball
+1. Automates the registration for various drop-in events
 2. Runs automatically using Cron with GitHub Actions, saving you time and effort
 3. Parses verification codes from emails using IMAP. *Please note that this feature doesn't work with Gmail due to their policies ([learn more](https://support.google.com/accounts/answer/6010255))*
-4. Sends the booking results to your Telegram account, keeping you updated
+4. Sends the registration results to the Telegram account, keeping you updated
 
-![Booking result](img/telegram.png)
+![Registration result](img/telegram.png)
 
 ## Schedule configuration
 
@@ -39,8 +39,8 @@ The file [`schedule.json`](schedule.json) contains a list of facilities for Adul
 
 - `name (str)`: The name of the facility
 - `home (str)`: The homepage of the facility where you can find the schedule
-- `link (str)`: The booking page for the facility
-- `activity_button (str)`: The exact name of the button to be clicked for booking. Make sure to use the correct name (use the browser's inspector for button element)
+- `link (str)`: The registration page for the facility
+- `activity_button (str)`: The exact name of the button to be clicked for registration. Make sure to use the correct name (use the browser's inspector for the button element)
 - `schedule[] (list)`: A list of schedules
 - `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
 - `starting_time (str)`: The starting time for the activity
@@ -102,4 +102,4 @@ The script can be scheduled to run periodically, increasing your chances of gett
 
 3. You can monitor the script's execution and results in the Actions tab of your repository
 
-*The script has been scheduled to run at 5:57 PM to avoid high load periods on every hour in GitHub Actions*
+*The script has been scheduled to run at 5:56 PM to avoid [high load periods](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) in the beginning of every hour in GitHub Actions*

@@ -11,31 +11,33 @@ from webdriver_manager.chrome import ChromeDriverManager
 from slot_finder import SlotFinder
 from slot_reservation import SlotReservation
 
-TARGET_RUN_TIME = "18:00:00"
+TARGET_RUN_TIME = "18:00:00"  # Time when the registration begins
+SCHEDULE_JSON = "schedule.json"  # Name of json file with the schedule
+CRON_MODE = True  # Set to False in case of manual run
 
 
-class SlotBookingApp:
+class SlotRegistrationApp:
     """
-    Class representing a slot booking application.
+    Class representing a slot registration application.
 
     Methods:
     - __init__():
-        Initialize the SlotBookingApp instance.
+        Initialize the SlotRegistrationApp instance.
     - run():
-        Run the slot booking application.
+        Run the slot registration application.
     """
     def __init__(self) -> None:
         """
-        Initialize the SlotBookingApp instance.
+        Initialize the SlotRegistrationApp instance.
         """
         self.script_dir: str = os.path.dirname(os.path.abspath(__file__))
         self.schedule_json_path: str = os.path.join(
-            self.script_dir, '..', 'schedule.json'
+            self.script_dir, '..', SCHEDULE_JSON
         )
 
     def run(self) -> None:
         """
-        Run the slot booking application.
+        Run the slot registration application.
         """
         logging.basicConfig(level=logging.INFO)
         logging.getLogger('WDM').setLevel(logging.ERROR)
@@ -44,14 +46,14 @@ class SlotBookingApp:
             finder: SlotFinder = SlotFinder(self.schedule_json_path)
             available_slots: Dict[str, Dict[str, Any]] = finder.find_slots()
 
-            if TARGET_RUN_TIME == "18:00:00":
+            if CRON_MODE:
                 current_time: str = time.strftime("%H:%M:%S")
                 while current_time < TARGET_RUN_TIME:
                     time.sleep(2)
                     current_time = time.strftime("%H:%M:%S")
                     message: str = (
                         f'Waiting for {TARGET_RUN_TIME} to '
-                        f'start booking, current time {current_time}...'
+                        f'start registration, current time {current_time}...'
                     )
                     logging.info(message)
 
@@ -76,8 +78,8 @@ def main() -> None:
     """
     Entry point for the application script.
     """
-    slot_booking_app: SlotBookingApp = SlotBookingApp()
-    slot_booking_app.run()
+    slot_registration_app: SlotRegistrationApp = SlotRegistrationApp()
+    slot_registration_app.run()
 
 
 if __name__ == "__main__":
