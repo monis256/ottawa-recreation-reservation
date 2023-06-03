@@ -93,7 +93,9 @@ class SlotReservation:
             email_input.clear()
             email_input.send_keys(self.env_var.imap_email)
 
-            name_input = driver.find_element(By.ID, "field2021")
+            name_input = driver.find_element(
+                By.XPATH, "//input[starts-with(@id, 'field')]"
+            )
             name_input.clear()
             name_input.send_keys(self.env_var.name)
             time.sleep(1)
