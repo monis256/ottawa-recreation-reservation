@@ -6,16 +6,16 @@ Automate your Ottawa recreation reservations
 
 ## Motivation
 
-The demand for recreational activities, such as Volleyball games, in Ottawa is high. To secure a slot for these activities, players need to book immediately when the registration opens, two days in advance at 6 PM.
+The demand for recreational activities, such as Volleyball games, in Ottawa is high. To secure a slot for these activities, players need to book immediately when the reservation opens, two days in advance at 6 PM.
 
 To simplify this process and increase your chances of getting a reservation, I have created this script that:
 
-1. Automates the registration for various drop-in events
+1. Automates the reservation for various drop-in events
 2. Runs automatically using Cron with GitHub Actions, saving you time and effort
-3. Parses verification codes from emails using IMAP. *Please note that this feature doesn't work with Gmail due to their policies ([learn more](https://support.google.com/accounts/answer/6010255))*
-4. Sends the registration results to the Telegram account, keeping you updated
+3. Parses verification codes from emails using IMAP. *Please note that this feature doesn't work with Gmail due to [their policies](https://support.google.com/accounts/answer/6010255)*
+4. Sends the reservation results to the Telegram account, keeping you updated
 
-![Registration result](img/telegram.png)
+![Reservation result](img/telegram.png)
 
 ## Schedule configuration
 
@@ -39,8 +39,8 @@ The file [`schedule.json`](schedule.json) contains a list of facilities for Adul
 
 - `name (str)`: The name of the facility
 - `home (str)`: The homepage of the facility where you can find the schedule
-- `link (str)`: The registration page for the facility
-- `activity_button (str)`: The exact name of the button to be clicked for registration. Make sure to use the correct name (use the browser's inspector for the button element)
+- `link (str)`: The reservation page for the facility
+- `activity_button (str)`: The exact name of the button to be clicked for reservation. Make sure to use the correct name (use the browser's inspector for the button element)
 - `schedule[] (list)`: A list of schedules
 - `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
 - `starting_time (str)`: The starting time for the activity
@@ -61,8 +61,8 @@ IMAP_EMAIL="my-email@gmail.com"
 IMAP_PASSWORD="my-password"
 IMAP_SERVER="mail.myserver.com"
 NAME="John Doe"
-TELEGRAM_BOT_TOKEN=12345:AABBCCDDEEFFGG
-TELEGRAM_CHAT_ID=12345678
+TELEGRAM_BOT_TOKEN="12345:AABBCCDDEEFFGG"
+TELEGRAM_CHAT_ID="12345678"
 ```
 
 ### How to Obtain a Telegram Token and Chat ID
@@ -80,6 +80,7 @@ TELEGRAM_CHAT_ID=12345678
 4. Install the required packages by running the following command:
 
 ```bash
+python -m venv src/
 pip install -r requirements.txt
 ```
 

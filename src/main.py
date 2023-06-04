@@ -13,19 +13,19 @@ from slot_reservation import SlotReservation
 from constant import TARGET_RUN_TIME, SCHEDULE_JSON, CRON_MODE, CHROME_HEADLESS
 
 
-class SlotRegistrationApp:
+class SlotReservationApp:
     """
-    Class representing a slot registration application.
+    Class representing a slot reservation application.
 
     Methods:
     - __init__():
-        Initialize the SlotRegistrationApp instance.
+        Initialize the SlotReservationApp instance.
     - run():
-        Run the slot registration application.
+        Run the slot reservation application.
     """
     def __init__(self) -> None:
         """
-        Initialize the SlotRegistrationApp instance.
+        Initialize the SlotReservationApp instance.
         """
         self.script_dir: str = os.path.dirname(os.path.abspath(__file__))
         self.schedule_json_path: str = os.path.join(
@@ -34,7 +34,7 @@ class SlotRegistrationApp:
 
     def run(self) -> None:
         """
-        Run the slot registration application.
+        Run the slot reservation application.
         """
         logging.basicConfig(level=logging.INFO)
         logging.getLogger('WDM').setLevel(logging.ERROR)
@@ -50,7 +50,7 @@ class SlotRegistrationApp:
                     current_time = time.strftime("%H:%M:%S")
                     message: str = (
                         f'Waiting for {TARGET_RUN_TIME} to '
-                        f'start registration, current time {current_time}...'
+                        f'start reservation, current time {current_time}...'
                     )
                     logging.info(message)
 
@@ -76,8 +76,8 @@ def main() -> None:
     """
     Entry point for the application script.
     """
-    slot_registration_app: SlotRegistrationApp = SlotRegistrationApp()
-    slot_registration_app.run()
+    slot_reservation_app: SlotReservationApp = SlotReservationApp()
+    slot_reservation_app.run()
 
 
 if __name__ == "__main__":

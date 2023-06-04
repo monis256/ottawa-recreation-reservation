@@ -6,4 +6,4 @@ TG_API_URL = "https://api.telegram.org/bot"  # Telegram API URL
 CHROME_HEADLESS = True  # Set to False for watching Chrome window
 MAX_RETRIES = 3  # Retries count for Confirm button
 SCHEDULE_JSON = "schedule.json"  # Name of json file with the schedule
-TARGET_RUN_TIME = "18:00:00"  # Time when the registration begins
+TARGET_RUN_TIME = "18:00:00"  # Time when the reservation begins

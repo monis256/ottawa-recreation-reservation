@@ -99,6 +99,8 @@ class SlotReservation:
             time.sleep(1)
 
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
+            time.sleep(1)
+
             retries = 0
             while retries < MAX_RETRIES:
                 try:
@@ -107,7 +109,7 @@ class SlotReservation:
                     )
                     if retry_text_element.is_displayed():
                         retries += 1
-                        logging.warning("Retry attempt %d", retries)
+                        logging.error("❌ Retry attempt %d", retries)
                         driver.find_element(
                             By.CLASS_NAME, "mdc-button__ripple"
                         ).click()
@@ -117,10 +119,13 @@ class SlotReservation:
                 except NoSuchElementException:
                     break
 
+            if retries == MAX_RETRIES:
+                raise Exception
+
             confirmation_code = None
             while confirmation_code is None:
                 time.sleep(1)
-                logging.info("Waiting for a code to verify registration...")
+                logging.info("Waiting for a code to verify reservation...")
                 extractor = ConfirmationCodeExtractor(
                     self.env_var.imap_server,
                     self.env_var.imap_email,

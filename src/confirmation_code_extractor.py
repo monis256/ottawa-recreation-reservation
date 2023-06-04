@@ -19,7 +19,6 @@ class ConfirmationCodeExtractor:
         Initializes an instance of the ConfirmationCodeExtractor class.
     - get_confirmation_code(self) -> str:
         Retrieves the confirmation code from the latest email.
-
     """
 
     def __init__(self, imap_server: str, imap_email: str, imap_password: str):
@@ -45,12 +44,11 @@ class ConfirmationCodeExtractor:
         Returns:
         - confirmation_code (str): The extracted confirmation code.
         """
-
         confirmation_code = None
         with imaplib.IMAP4_SSL(self.imap_server) as imap:
             imap.login(self.imap_email, self.imap_password)
             imap.select("INBOX")
-            status, messages = imap.search(None, "UNSEEN")
+            _, messages = imap.search(None, "UNSEEN")
             email_ids = messages[0].split()
 
             for email_id in email_ids:

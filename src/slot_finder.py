@@ -36,44 +36,40 @@ class SlotFinder:
             data: Dict[str, Any] = json.load(file)
 
         logging.info('Looking for available slots...')
-        curr_date: datetime.date = datetime.date.today()
-        future_weekday: datetime.date = curr_date + datetime.timedelta(days=2)
+        future_weekday: datetime.date = (
+            datetime.date.today() + datetime.timedelta(days=2)
+        )
         future_weekday_iso: int = future_weekday.isoweekday()
 
         # Find facilities with available slots
         available_facilities: Dict[str, Dict[str, Any]] = {}
         for facility in data["facilities"]:
-            facility_name: str = facility["name"]
-            facility_schedule: List[Dict[str, Any]] = facility["schedule"]
-            facility_link: str = facility["link"]
-            facility_activity_button: str = facility["activity_button"]
             slots: List[Dict[str, Any]] = []
 
-            for slot in facility_schedule:
-                slot_day_of_week: int = slot["day_of_week"]
-                slot_starting_time: str = slot["starting_time"]
-                slot_follow: bool = slot["follow"]
-
-                if future_weekday_iso == slot_day_of_week and slot_follow:
+            for slot in facility["schedule"]:
+                if (
+                    future_weekday_iso == slot["day_of_week"] and
+                    slot["follow"]
+                ):
                     message: str = (
-                        f'✅ Slot found in {facility_name} '
-                        f'on {future_weekday} at {slot_starting_time}'
+                        f'✅ Slot found in {facility["name"]} '
+                        f'on {future_weekday} at {slot["starting_time"]}'
                     )
                     logging.info(message)
 
                     slot_data: Dict[str, Any] = {
-                        "day_of_week": slot_day_of_week,
-                        "starting_time": slot_starting_time
+                        "day_of_week": slot["day_of_week"],
+                        "starting_time": slot["starting_time"]
                     }
                     slots.append(slot_data)
 
                     facility_data: Dict[str, Any] = {
-                        "link": facility_link,
-                        "activity_button": facility_activity_button,
+                        "link": facility["link"],
+                        "activity_button": facility["activity_button"],
                         "slots": slots
                     }
 
-                    available_facilities[facility_name] = facility_data
+                    available_facilities[facility["name"]] = facility_data
 
         if not available_facilities:
             logging.error('❌ No slots found for %s', future_weekday)
