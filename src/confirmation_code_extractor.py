@@ -69,17 +69,19 @@ class ConfirmationCodeExtractor:
                                 for part in msg.walk():
                                     content_type = part.get_content_type()
                                     if content_type == "text/plain":
-                                        body = part.get_payload(decode=True)\
-                                            .decode()
-                                        pattern = r"\b\d{4}\b"
-                                        match = re.search(pattern, body)
+                                        match = re.search(
+                                            r"\b\d{4}\b",
+                                            part.get_payload(decode=True)
+                                                .decode()
+                                        )
                                         if match:
                                             confirmation_code = match.group(0)
                                             break
                             else:
-                                body = msg.get_payload(decode=True).decode()
-                                pattern = r"\b\d{4}\b"
-                                match = re.search(pattern, body)
+                                match = re.search(
+                                    r"\b\d{4}\b",
+                                    msg.get_payload(decode=True).decode()
+                                )
                                 if match:
                                     confirmation_code = match.group(0)
                                     break

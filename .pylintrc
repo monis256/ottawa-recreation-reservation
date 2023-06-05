@@ -4,18 +4,8 @@ ignore-paths=src/__pycache__, src/bin, src/include, src/lib
 [MESSAGES CONTROL]
 disable=
     import-error,
-
-    # invalid-name,
     missing-docstring,
     too-few-public-methods,
-    # protected-access,
-    # too-few-public-methods,
-    # # handled by black
-    # format,
-    # # We anticipate #3512 where it will become optional
-    # fixme,
-    # cyclic-import,
-    # import-error,
 
 [BASIC]
 good-names=
