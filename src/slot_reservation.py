@@ -1,5 +1,6 @@
 import logging
 import time
+import random
 from typing import Any
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -45,11 +46,11 @@ class SlotReservation:
             rec_slot (dict): Details of the slot to be reserved.
         """
         try:
-            message: str = (
-                f'Registering slot in {rec_name} at '
-                f'{rec_slot["starting_time"]}...'
+            logging.info(
+                'Registering slot in %s at %s...',
+                rec_name,
+                rec_slot["starting_time"]
             )
-            logging.info(message)
 
             driver.get(rec_details["link"])
             driver.find_element(
@@ -62,7 +63,7 @@ class SlotReservation:
             )
             # When page doesn't have dialogue 'How many people in your group?'
             if reservation_count_input.get_attribute("type") == "hidden":
-                message = (
+                message: str = (
                     f'❌ No slots available in {rec_name} at '
                     f'{rec_slot["starting_time"]} '
                     f'({rec_details["activity_button"]})'
@@ -76,10 +77,10 @@ class SlotReservation:
             reservation_count_input.send_keys(GROUP_SIZE)
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
             driver.find_element(By.CLASS_NAME, "date-text").click()
-            class_name = "mdc-button__label available-time"
             driver.find_element(
                 By.XPATH,
-                "//a[contains(span[@class='" + class_name + "'], '" +
+                "//a[contains(span[@class='" +
+                "mdc-button__label available-time'], '" +
                 rec_slot["starting_time"] + "')]"
             ).click()
 
@@ -96,10 +97,10 @@ class SlotReservation:
             )
             name_input.clear()
             name_input.send_keys(self.env_var.name)
-            time.sleep(1)
+            time.sleep(random.uniform(1, 2))
 
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
-            time.sleep(1)
+            time.sleep(random.uniform(1, 2))
 
             retries = 0
             while retries < MAX_RETRIES:
@@ -113,7 +114,7 @@ class SlotReservation:
                         driver.find_element(
                             By.CLASS_NAME, "mdc-button__ripple"
                         ).click()
-                        time.sleep(1)
+                        time.sleep(random.uniform(2, 3))
                     else:
                         break
                 except NoSuchElementException:
@@ -140,7 +141,7 @@ class SlotReservation:
             code_input.send_keys(confirmation_code)
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
-            message = (
+            message: str = (
                 f'✅ Successfully booked a slot in {rec_name} '
                 f'at {rec_slot["starting_time"]} '
                 f'({rec_details["activity_button"]})'
@@ -150,7 +151,7 @@ class SlotReservation:
             self.telegram_bot.send_photo(driver.get_screenshot_as_png())
 
         except Exception as err:
-            message = (
+            message: str = (
                 f'❌ Failed to book a slot in {rec_name} '
                 f'at {rec_slot["starting_time"]} '
                 f'({rec_details["activity_button"]}), exception: {err}'
