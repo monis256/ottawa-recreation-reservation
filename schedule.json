@@ -22,12 +22,12 @@
         {
           "day_of_week": 4,
           "starting_time": "6:40 PM",
-          "follow": true
+          "follow": false
         },
         {
           "day_of_week": 4,
           "starting_time": "7:50 PM",
-          "follow": true
+          "follow": false
         }
       ]
     },
