@@ -87,20 +87,22 @@ class SlotReservation:
             telephone_input = driver.find_element(By.ID, "telephone")
             telephone_input.clear()
             telephone_input.send_keys(self.env_var.phone_number)
+            time.sleep(random.uniform(0, 1))
 
             email_input = driver.find_element(By.ID, "email")
             email_input.clear()
             email_input.send_keys(self.env_var.imap_email)
+            time.sleep(random.uniform(0, 1))
 
             name_input = driver.find_element(
                 By.XPATH, "//input[starts-with(@id, 'field')]"
             )
             name_input.clear()
             name_input.send_keys(self.env_var.name)
-            time.sleep(random.uniform(1, 2))
+            time.sleep(random.uniform(0, 1))
 
             driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
-            time.sleep(random.uniform(1, 2))
+            time.sleep(random.uniform(0, 2))
 
             retries = 0
             while retries < MAX_RETRIES:

@@ -3,6 +3,7 @@ import json
 import sys
 import logging
 from typing import Dict, Any, List
+from constant import PRIOR_DAYS
 
 
 class SlotFinder:
@@ -37,7 +38,7 @@ class SlotFinder:
 
         logging.info('Looking for available slots...')
         future_weekday: datetime.date = (
-            datetime.date.today() + datetime.timedelta(days=2)
+            datetime.date.today() + datetime.timedelta(days=PRIOR_DAYS)
         )
         future_weekday_iso: int = future_weekday.isoweekday()
 
