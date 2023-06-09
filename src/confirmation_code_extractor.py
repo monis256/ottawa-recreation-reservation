@@ -19,11 +19,14 @@ class ConfirmationCodeExtractor:
         Initializes an instance of the ConfirmationCodeExtractor class.
     - get_confirmation_code(self) -> str:
         Retrieves the confirmation code from the latest email.
+    - _decode_bytes(self, value: bytes) -> str:
+        Decode the value if it's in bytes format.
+
     """
 
     def __init__(self, imap_server: str, imap_email: str, imap_password: str):
         """
-        Initializes an instance of the ConfirmationCodeExtractor class.
+        Initialize an instance of the ConfirmationCodeExtractor class.
 
         Args:
         - imap_server (str): The IMAP server address.
@@ -39,7 +42,7 @@ class ConfirmationCodeExtractor:
 
     def get_confirmation_code(self) -> str:
         """
-        Retrieves the confirmation code from the latest email.
+        Retrieve the confirmation code from the latest email.
 
         Returns:
         - confirmation_code (str): The extracted confirmation code.
@@ -53,37 +56,34 @@ class ConfirmationCodeExtractor:
 
             for email_id in email_ids:
                 _, msg = imap.fetch(email_id, "(RFC822)")
-                for response in msg:
-                    if isinstance(response, tuple):
-                        msg = email.message_from_bytes(response[1])
-                        subject, encoding = decode_header(msg["Subject"])[0]
-                        if isinstance(subject, bytes):
-                            subject = subject.decode(encoding)
-                        email_from, encoding = \
-                            decode_header(msg.get("From"))[0]
-                        if isinstance(email_from, bytes):
-                            email_from = email_from.decode(encoding)
-                        if FROM_EMAIL in email_from and \
-                           FROM_SUBJECT in subject:
-                            if msg.is_multipart():
-                                for part in msg.walk():
-                                    content_type = part.get_content_type()
-                                    if content_type == "text/plain":
-                                        match = re.search(
-                                            r"\b\d{4}\b",
-                                            part.get_payload(decode=True)
-                                                .decode()
-                                        )
-                                        if match:
-                                            confirmation_code = match.group(0)
-                                            break
-                            else:
-                                match = re.search(
-                                    r"\b\d{4}\b",
-                                    msg.get_payload(decode=True).decode()
-                                )
-                                if match:
-                                    confirmation_code = match.group(0)
-                                    break
+                email_message = email.message_from_bytes(msg[0][1])
+                subject_header, from_header = (
+                    decode_header(email_message["Subject"])[0][0],
+                    decode_header(email_message["From"])[0][0],
+                )
+
+                subject = self._decode_bytes(subject_header)
+                email_from = self._decode_bytes(from_header)
+
+                if FROM_EMAIL in email_from and FROM_SUBJECT in subject:
+                    for part in email_message.walk():
+                        if part.get_content_type() == "text/plain":
+                            payload = part.get_payload(decode=True)
+                            match = re.search(r"\b\d{4}\b", payload.decode())
+                            if match:
+                                return match.group(0)
 
         return confirmation_code
+
+    @staticmethod
+    def _decode_bytes(value: bytes) -> str:
+        """
+        Decode the value if it's in bytes format.
+
+        Args:
+        - value (bytes): The value to decode.
+
+        Returns:
+        - Decoded value (str).
+        """
+        return value.decode() if isinstance(value, bytes) else value
