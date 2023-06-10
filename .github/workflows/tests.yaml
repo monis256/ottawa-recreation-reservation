@@ -12,5 +12,6 @@ jobs:
         with:
           python-version: 3.11
           cache: 'pip'
+      - run: pip install flake8 pylint
       - run: flake8 src/
       - run: pylint src/
