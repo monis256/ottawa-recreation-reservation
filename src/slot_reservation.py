@@ -85,9 +85,24 @@ class SlotReservation:
             "//div[text()='" + rec_details["activity_button"] + "']"
         ).click()
 
-        reservation_count_input = driver.find_element(
-            By.ID, "reservationCount"
-        )
+        try:
+            reservation_count_input = driver.find_element(
+                By.ID, "reservationCount"
+            )
+        except NoSuchElementException:
+            driver.find_element(
+                By.XPATH, "//form[contains(@action, 'NoAvailableTime')]"
+            )
+            message: str = (
+                f'❌ No more available times in {rec_name} at '
+                f'{rec_slot["starting_time"]} '
+                f'({rec_details["activity_button"]})'
+            )
+            logging.error(message)
+            self.telegram_bot.send_message(message)
+            self.telegram_bot.send_photo(driver.get_screenshot_as_png())
+            return False
+
         # When page doesn't have dialogue 'How many people in your group?'
         if reservation_count_input.get_attribute("type") == "hidden":
             message: str = (
