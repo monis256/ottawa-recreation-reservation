@@ -51,7 +51,6 @@ class SlotReservation:
         """
         try:
             self._reserve_slot(driver, rec_name, rec_details, rec_slot)
-
         except NoSuchElementException as err:
             message: str = (
                 f'❌ Failed to book a slot in {rec_name} '
@@ -63,7 +62,7 @@ class SlotReservation:
             self.telegram_bot.send_photo(driver.get_screenshot_as_png())
 
     def _reserve_slot(self, driver: Any, rec_name: str,
-                      rec_details: dict, rec_slot: dict) -> None:
+                      rec_details: dict, rec_slot: dict) -> bool:
         """
         Reserves slots in the given recreation facility.
 
@@ -172,6 +171,8 @@ class SlotReservation:
         logging.info(message)
         self.telegram_bot.send_message(message)
         self.telegram_bot.send_photo(driver.get_screenshot_as_png())
+
+        return True
 
     @staticmethod
     def _perform_retry(driver: Any) -> None:

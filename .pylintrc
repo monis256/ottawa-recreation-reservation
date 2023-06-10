@@ -6,3 +6,4 @@ disable=
     import-error,
     missing-docstring,
     too-few-public-methods,
+    broad-exception-raised,
