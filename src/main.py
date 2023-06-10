@@ -39,37 +39,33 @@ class SlotReservationApp:
         logging.basicConfig(level=logging.INFO)
         logging.getLogger('WDM').setLevel(logging.ERROR)
 
-        try:
-            finder: SlotFinder = SlotFinder(self.schedule_json_path)
-            available_slots: Dict[str, Dict[str, Any]] = finder.find_slots()
+        finder: SlotFinder = SlotFinder(self.schedule_json_path)
+        available_slots: Dict[str, Dict[str, Any]] = finder.find_slots()
 
-            if CRON_MODE:
-                current_time: str = time.strftime("%H:%M:%S")
-                while current_time < TARGET_RUN_TIME:
-                    time.sleep(3)
-                    current_time = time.strftime("%H:%M:%S")
-                    message: str = (
-                        f'Waiting for {TARGET_RUN_TIME} to '
-                        f'start reservation, current time {current_time}...'
-                    )
-                    logging.info(message)
+        if CRON_MODE:
+            current_time: str = time.strftime("%H:%M:%S")
+            while current_time < TARGET_RUN_TIME:
+                time.sleep(3)
+                current_time = time.strftime("%H:%M:%S")
+                message: str = (
+                    f'Waiting for {TARGET_RUN_TIME} to '
+                    f'start reservation, current time {current_time}...'
+                )
+                logging.info(message)
 
-            chrome_options: Options = Options()
-            if CHROME_HEADLESS:
-                chrome_options.add_argument("--headless")
-            service: Service = Service(ChromeDriverManager().install())
-            driver: webdriver.Chrome = webdriver.Chrome(service=service,
-                                                        options=chrome_options)
+        chrome_options: Options = Options()
+        if CHROME_HEADLESS:
+            chrome_options.add_argument("--headless")
+        service: Service = Service(ChromeDriverManager().install())
+        driver: webdriver.Chrome = webdriver.Chrome(service=service,
+                                                    options=chrome_options)
 
-            reservation: SlotReservation = SlotReservation()
+        reservation: SlotReservation = SlotReservation()
 
-            for rec_name, rec_details in available_slots.items():
-                for rec_slot in rec_details["slots"]:
-                    reservation.reserve_slots(driver, rec_name,
-                                              rec_details, rec_slot)
-
-        except Exception as err:
-            logging.error('❌ Exception: %s', err)
+        for rec_name, rec_details in available_slots.items():
+            for rec_slot in rec_details["slots"]:
+                reservation.reserve_slots(driver, rec_name,
+                                          rec_details, rec_slot)
 
 
 def main() -> None:

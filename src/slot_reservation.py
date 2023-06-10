@@ -24,6 +24,8 @@ class SlotReservation:
         Reserves slots in the given recreation facility.
     - _reserve_slot(driver, rec_name, rec_details, rec_slot):
         Helper method that performs the actual slot reservation.
+    - _perform_retry(driver):
+        Performs the retry logic for slot reservation.
     """
 
     def __init__(self) -> None:
@@ -50,7 +52,7 @@ class SlotReservation:
         try:
             self._reserve_slot(driver, rec_name, rec_details, rec_slot)
 
-        except Exception as err:
+        except NoSuchElementException as err:
             message: str = (
                 f'❌ Failed to book a slot in {rec_name} '
                 f'at {rec_slot["starting_time"]} '
@@ -127,26 +129,7 @@ class SlotReservation:
 
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
-        retries = 0
-        while retries < MAX_RETRIES:
-            try:
-                retry_text_element = driver.find_element(
-                    By.XPATH, "//span[text()='Retry']"
-                )
-                if retry_text_element.is_displayed():
-                    retries += 1
-                    logging.error("❌ Retry attempt %d", retries)
-                    driver.find_element(
-                        By.CLASS_NAME, "mdc-button__ripple"
-                    ).click()
-                    time.sleep(random.uniform(2, 3))
-                else:
-                    break
-            except NoSuchElementException:
-                break
-
-        if retries == MAX_RETRIES:
-            raise Exception
+        self._perform_retry(driver)
 
         confirmation_code = None
         while confirmation_code is None:
@@ -174,3 +157,32 @@ class SlotReservation:
         logging.info(message)
         self.telegram_bot.send_message(message)
         self.telegram_bot.send_photo(driver.get_screenshot_as_png())
+
+    @staticmethod
+    def _perform_retry(driver: Any) -> None:
+        """
+        Performs the retry logic for slot reservation.
+
+        Args:
+            driver (Any): WebDriver object for interacting with the browser.
+        """
+        retries = 0
+        while retries < MAX_RETRIES:
+            try:
+                retry_text_element = driver.find_element(
+                    By.XPATH, "//span[text()='Retry']"
+                )
+                if retry_text_element.is_displayed():
+                    retries += 1
+                    logging.error("❌ Retry attempt %d", retries)
+                    driver.find_element(
+                        By.CLASS_NAME, "mdc-button__ripple"
+                    ).click()
+                    time.sleep(random.uniform(2, 3))
+                else:
+                    break
+            except NoSuchElementException:
+                break
+
+        if retries == MAX_RETRIES:
+            raise Exception

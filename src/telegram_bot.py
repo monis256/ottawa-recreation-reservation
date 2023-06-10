@@ -49,8 +49,8 @@ class TelegramBot:
             with self.session.post(url, json=payload) as response:
                 response.raise_for_status()
                 return response
-        except requests.exceptions.RequestException as e:
-            logging.error('❌ Error sending message: %s', e)
+        except requests.exceptions.RequestException as err:
+            logging.error('❌ Error sending message: %s', err)
             return None
 
     def send_photo(self, photo_file):
@@ -76,6 +76,6 @@ class TelegramBot:
             )
             response.raise_for_status()
             return response
-        except requests.exceptions.RequestException as e:
-            logging.error('❌ Error sending photo: %s', e)
+        except requests.exceptions.RequestException as err:
+            logging.error('❌ Error sending photo: %s', err)
             return None

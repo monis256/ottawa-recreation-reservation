@@ -6,10 +6,3 @@ disable=
     import-error,
     missing-docstring,
     too-few-public-methods,
-    too-many-locals,
-
-[BASIC]
-good-names=
-    i,
-    e,
-    logger,

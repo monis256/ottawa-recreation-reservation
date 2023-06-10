@@ -52,9 +52,8 @@ class ConfirmationCodeExtractor:
             imap.login(self.imap_email, self.imap_password)
             imap.select("INBOX")
             _, messages = imap.search(None, "UNSEEN")
-            email_ids = messages[0].split()
 
-            for email_id in email_ids:
+            for email_id in messages[0].split():
                 _, msg = imap.fetch(email_id, "(RFC822)")
                 email_message = email.message_from_bytes(msg[0][1])
                 subject_header, from_header = (
