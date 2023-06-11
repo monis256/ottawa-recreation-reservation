@@ -74,8 +74,7 @@ class SlotReservation:
         """
         logging.info(
             'Registering slot in %s at %s...',
-            rec_name,
-            rec_slot["starting_time"]
+            rec_name, rec_slot["starting_time"]
         )
 
         driver.get(rec_details["link"])
@@ -143,7 +142,17 @@ class SlotReservation:
 
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
-        self._perform_retry(driver)
+        if not self._perform_retry(driver):
+            message: str = (
+                f'❌ Failed to reserve slot in {rec_name} '
+                f'at {rec_slot["starting_time"]} '
+                f'({rec_details["activity_button"]}) '
+                f'after {MAX_RETRIES} retries'
+            )
+            logging.error(message)
+            self.telegram_bot.send_message(message)
+            self.telegram_bot.send_photo(driver.get_screenshot_as_png())
+            return False
 
         confirmation_code = None
         while confirmation_code is None:
@@ -175,7 +184,7 @@ class SlotReservation:
         return True
 
     @staticmethod
-    def _perform_retry(driver: Any) -> None:
+    def _perform_retry(driver: Any) -> bool:
         """
         Performs the retry logic for slot reservation.
 
@@ -201,4 +210,6 @@ class SlotReservation:
                 break
 
         if retries == MAX_RETRIES:
-            raise Exception
+            return False
+
+        return True
