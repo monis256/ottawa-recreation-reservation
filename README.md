@@ -7,7 +7,7 @@ Automate your Ottawa recreation reservations
 
 ## Motivation
 
-The demand for recreational activities, such as Volleyball games, in Ottawa is high. To secure a slot for these activities, players need to book immediately when the reservation opens, two days in advance at 6 PM.
+The demand for recreational activities, such as Volleyball games, in Ottawa is high. To secure a slot for these activities, players need to reserve immediately when the reservation opens, two days in advance at 6 PM.
 
 To simplify this process and increase your chances of getting a reservation, I have created this script that:
 
@@ -45,7 +45,7 @@ The file [`schedule.json`](schedule.json) contains a list of facilities for Adul
 - `schedule[] (list)`: A list of schedules
 - `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
 - `starting_time (str)`: The starting time for the activity
-- `follow (bool)`: If set to `true`, the script will attempt to book this facility. Set it to `false` to skip
+- `follow (bool)`: If set to `true`, the script will attempt to reserve this facility. Set it to `false` to skip
 
 ## Prerequisites
 

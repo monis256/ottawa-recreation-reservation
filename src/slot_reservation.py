@@ -53,7 +53,7 @@ class SlotReservation:
             self._reserve_slot(driver, rec_name, rec_details, rec_slot)
         except NoSuchElementException as err:
             message: str = (
-                f'❌ Failed to book a slot in {rec_name} '
+                f'❌ Failed to reserve a slot in {rec_name} '
                 f'at {rec_slot["starting_time"]} '
                 f'({rec_details["activity_button"]}), exception: {err}'
             )
@@ -173,7 +173,7 @@ class SlotReservation:
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
         message: str = (
-            f'✅ Successfully booked a slot in {rec_name} '
+            f'✅ Successfully reserved a slot in {rec_name} '
             f'at {rec_slot["starting_time"]} '
             f'({rec_details["activity_button"]})'
         )
