@@ -1,6 +1,7 @@
 # Ottawa Recreation Reservation
 
 [![Autoreservation](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/autoreservation.yaml/badge.svg)](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/autoreservation.yaml)
+[![Tests](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/tests.yaml/badge.svg)](https://github.com/Amet13/ottawa-recreation-reservation/actions/workflows/tests.yaml)
 
 Automate your Ottawa recreation reservations
 
