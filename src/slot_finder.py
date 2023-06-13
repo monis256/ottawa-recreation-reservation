@@ -74,6 +74,6 @@ class SlotFinder:
 
         if not available_facilities:
             logging.error('❌ No slots found for %s', future_weekday)
-            sys.exit()
+            sys.exit(0)
 
         return available_facilities
