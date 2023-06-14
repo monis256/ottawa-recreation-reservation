@@ -1,9 +1,13 @@
+# Python specific
 __pycache__/
 .pytest_cache/
+*.pyc
+
+# Environment
 .env
+
+# System specific
 .DS_Store
+
+# Project specific
 schedule-test.json
-src/bin/
-src/include/
-src/lib/
-src/pyvenv.cfg

@@ -12,6 +12,10 @@ jobs:
         with:
           python-version: 3.11
           cache: 'pip'
-      - run: pip install flake8 pylint
+      - run: timedatectl set-timezone America/Toronto
+      - run: |
+          pip install flake8 pylint pipenv
+          pipenv install
+          pipenv shell
       - run: flake8 src/
       - run: pylint src/

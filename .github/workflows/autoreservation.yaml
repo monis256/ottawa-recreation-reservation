@@ -14,10 +14,10 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11
-          cache: 'pip'
-      - run: sudo timedatectl set-timezone America/Toronto
-      - run: pip install -r requirements.txt
-      - run: ./src/main.py
+      - run: timedatectl set-timezone America/Toronto
+      - run: |
+          pip install pipenv
+          pipenv run ./src/main.py
         env:
           PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
           IMAP_EMAIL: ${{ secrets.IMAP_EMAIL }}

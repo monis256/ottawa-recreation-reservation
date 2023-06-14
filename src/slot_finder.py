@@ -34,7 +34,11 @@ class SlotFinder:
             dict: Dictionary containing available slots grouped by facility.
         """
         with open(self.json_file_path, encoding="utf-8") as file:
-            data: Dict[str, Any] = json.load(file)
+            try:
+                data: Dict[str, Any] = json.load(file)
+            except json.JSONDecodeError as err:
+                logging.error('❌ Error decoding JSON: %s', err)
+                sys.exit(1)
 
         logging.info('Looking for available slots...')
         future_weekday: datetime.date = (

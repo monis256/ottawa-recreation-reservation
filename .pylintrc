@@ -1,13 +1,6 @@
-[MAIN]
-ignore-paths =
-    src/__pycache__,
-    src/bin,
-    src/include,
-    src/lib
-
 [MESSAGES CONTROL]
 disable =
     import-error,
     missing-docstring,
     too-few-public-methods,
-    too-many-statements,
+    too-many-statements

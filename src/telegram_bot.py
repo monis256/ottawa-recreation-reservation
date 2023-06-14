@@ -28,7 +28,7 @@ class TelegramBot:
         self.telegram_bot_token: str = env_var.telegram_bot_token
         self.telegram_chat_id: int = env_var.telegram_chat_id
         self.session: requests.Session = requests.Session()
-        self.session.headers.update({'User-Agent': 'My Telegram Bot'})
+        self.session.headers.update({'User-Agent': 'Ottawa Recreation Bot'})
 
     def send_message(self, text: str) -> Union[requests.Response, None]:
         """

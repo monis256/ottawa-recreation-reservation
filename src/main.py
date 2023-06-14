@@ -36,12 +36,35 @@ class SlotReservationApp:
         """
         Run the slot reservation application.
         """
+        self._configure_logging()
+        self._wait_for_cron_mode()
+
+        chrome_options: Options = Options()
+        if CHROME_HEADLESS:
+            chrome_options.add_argument("--headless")
+        service: Service = Service(ChromeDriverManager().install())
+        service.start()
+
+        try:
+            with webdriver.Chrome(
+                service=service,
+                options=chrome_options
+            ) as driver:
+                self._run_slot_reservation(driver)
+        finally:
+            service.stop()
+
+    def _configure_logging(self) -> None:
+        """
+        Configure the logging settings for the application.
+        """
         logging.basicConfig(level=logging.INFO)
         logging.getLogger('WDM').setLevel(logging.ERROR)
 
-        finder: SlotFinder = SlotFinder(self.schedule_json_path)
-        available_slots: Dict[str, Dict[str, Any]] = finder.find_slots()
-
+    def _wait_for_cron_mode(self) -> None:
+        """
+        Wait for the target run time in cron mode.
+        """
         if CRON_MODE:
             current_time: str = time.strftime("%H:%M:%S")
             while current_time < TARGET_RUN_TIME:
@@ -53,12 +76,16 @@ class SlotReservationApp:
                 )
                 logging.info(message)
 
-        chrome_options: Options = Options()
-        if CHROME_HEADLESS:
-            chrome_options.add_argument("--headless")
-        service: Service = Service(ChromeDriverManager().install())
-        driver: webdriver.Chrome = webdriver.Chrome(service=service,
-                                                    options=chrome_options)
+    def _run_slot_reservation(self, driver: webdriver.Chrome) -> None:
+        """
+        Run the slot reservation process.
+
+        Args:
+            driver (webdriver.Chrome): The Chrome webdriver instance.
+
+        """
+        finder: SlotFinder = SlotFinder(self.schedule_json_path)
+        available_slots: Dict[str, Dict[str, Any]] = finder.find_slots()
 
         reservation: SlotReservation = SlotReservation()
 
@@ -68,13 +95,6 @@ class SlotReservationApp:
                                           rec_details, rec_slot)
 
 
-def main() -> None:
-    """
-    Entry point for the application script.
-    """
-    slot_reservation_app: SlotReservationApp = SlotReservationApp()
-    slot_reservation_app.run()
-
-
 if __name__ == "__main__":
-    main()
+    slot_reservation_app = SlotReservationApp()
+    slot_reservation_app.run()

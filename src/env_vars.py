@@ -64,7 +64,6 @@ class EnvVars:
         - env_vars (Dict[str, str]): A dictionary containing env vars.
         """
         load_dotenv()
-        logging.basicConfig(level=logging.INFO)
         env_vars = {var: os.environ.get(var) for var in required_vars}
 
         if all(env_vars.values()):

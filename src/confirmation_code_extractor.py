@@ -47,7 +47,6 @@ class ConfirmationCodeExtractor:
         Returns:
         - confirmation_code (str): The extracted confirmation code.
         """
-        confirmation_code = None
         with imaplib.IMAP4_SSL(self.imap_server) as imap:
             imap.login(self.imap_email, self.imap_password)
             imap.select("INBOX")
@@ -72,7 +71,7 @@ class ConfirmationCodeExtractor:
                             if match:
                                 return match.group(0)
 
-        return confirmation_code
+        return None
 
     @staticmethod
     def _decode_bytes(value: bytes) -> str:

@@ -1,7 +1,3 @@
 [flake8]
 exclude =
-    .git,
-    src/__pycache__,
-    src/bin,
-    src/include,
-    src/lib
+    .git
