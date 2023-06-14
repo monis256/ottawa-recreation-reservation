@@ -1,3 +1,4 @@
+import calendar
 import logging
 import time
 import random
@@ -24,6 +25,8 @@ class SlotReservation:
         Reserves slots in the given recreation facility.
     - _reserve_slot(driver, rec_name, rec_details, rec_slot):
         Helper method that performs the actual slot reservation.
+    - _fill_reservation_form(driver):
+        Fills the reservation form with user details.
     - _perform_retry(driver):
         Performs the retry logic for slot reservation.
     """
@@ -73,7 +76,7 @@ class SlotReservation:
             rec_slot (dict): Details of the slot to be reserved.
         """
         logging.info(
-            'Registering slot in %s at %s...',
+            'Reserving slot in %s at %s...',
             rec_name, rec_slot["starting_time"]
         )
 
@@ -116,31 +119,18 @@ class SlotReservation:
         reservation_count_input.clear()
         reservation_count_input.send_keys(GROUP_SIZE)
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
-        driver.find_element(By.CLASS_NAME, "date-text").click()
+        driver.find_elements(By.CLASS_NAME, "header-text")[-1].click()
+        weekday_name = calendar.day_name[rec_slot["day_of_week"]-1]
+
         driver.find_element(
-            By.XPATH,
-            "//a[contains(span[@class='" +
-            "mdc-button__label available-time'], '" +
-            rec_slot["starting_time"] + "')]"
+            By.CSS_SELECTOR,
+            "[aria-label*='" +
+            rec_slot["starting_time"] + " " +
+            weekday_name + "']"
         ).click()
         time.sleep(random.uniform(0, 1))
 
-        telephone_input = driver.find_element(By.ID, "telephone")
-        email_input = driver.find_element(By.ID, "email")
-        name_input = driver.find_element(
-            By.XPATH, "//input[starts-with(@id, 'field')]"
-        )
-
-        telephone_input.clear()
-        email_input.clear()
-        name_input.clear()
-
-        telephone_input.send_keys(self.env_var.phone_number)
-        email_input.send_keys(self.env_var.imap_email)
-        name_input.send_keys(self.env_var.name)
-        time.sleep(random.uniform(0, 1))
-
-        driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
+        self._fill_reservation_form(driver)
 
         if not self._perform_retry(driver):
             message: str = (
@@ -182,6 +172,32 @@ class SlotReservation:
         self.telegram_bot.send_photo(driver.get_screenshot_as_png())
 
         return True
+
+    def _fill_reservation_form(self, driver: Any) -> None:
+        """
+        Fills the reservation form with user details.
+
+        Args:
+            driver (Any): WebDriver object for interacting with the browser.
+        """
+        telephone_input = driver.find_element(By.ID, "telephone")
+        telephone_input.clear()
+        telephone_input.send_keys(self.env_var.phone_number)
+        time.sleep(random.uniform(0, 1))
+
+        email_input = driver.find_element(By.ID, "email")
+        email_input.clear()
+        email_input.send_keys(self.env_var.imap_email)
+        time.sleep(random.uniform(0, 1))
+
+        name_input = driver.find_element(
+            By.XPATH, "//input[starts-with(@id, 'field')]"
+        )
+        name_input.clear()
+        name_input.send_keys(self.env_var.name)
+        time.sleep(random.uniform(0, 1))
+
+        driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
     @staticmethod
     def _perform_retry(driver: Any) -> bool:
