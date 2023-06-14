@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+python-dotenv = "==1.0.0"
+requests = "==2.31.0"
+selenium = "==4.10.0"
+webdriver_manager = "==3.8.6"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

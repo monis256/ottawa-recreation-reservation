@@ -81,8 +81,9 @@ TELEGRAM_CHAT_ID="12345678"
 4. Install the required packages by running the following command:
 
 ```bash
-python -m venv src/
-pip install -r requirements.txt
+pip install --upgrade pip pipenv
+pipenv install
+pipenv shell
 ```
 
 5. Run the script using the following command:
