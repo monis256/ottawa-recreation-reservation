@@ -82,6 +82,7 @@ TELEGRAM_CHAT_ID="12345678"
 
 ```bash
 pip install --upgrade pip pipenv
+pipenv install
 ```
 
 5. Run the script using the following command:

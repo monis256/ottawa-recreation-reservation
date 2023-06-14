@@ -17,7 +17,9 @@ jobs:
       - run: sudo timedatectl set-timezone America/Toronto
       - run: |
           pip install pipenv
-          pipenv run ./src/main.py
+          pipenv check
+          pipenv install
+      - run: pipenv run ./src/main.py
         env:
           PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
           IMAP_EMAIL: ${{ secrets.IMAP_EMAIL }}
