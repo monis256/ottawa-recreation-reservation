@@ -19,16 +19,6 @@
       "link": "https://reservation.frontdesksuite.ca/rcfs/francoisdupuis/",
       "activity_button": "Volleyball 16+",
       "schedule": [
-        {
-          "day_of_week": 4,
-          "starting_time": "6:40 PM",
-          "follow": false
-        },
-        {
-          "day_of_week": 4,
-          "starting_time": "7:50 PM",
-          "follow": false
-        }
       ]
     },
     {
