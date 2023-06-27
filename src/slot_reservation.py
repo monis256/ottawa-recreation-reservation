@@ -195,7 +195,7 @@ class SlotReservation:
         )
         name_input.clear()
         name_input.send_keys(self.env_var.name)
-        time.sleep(random.uniform(0, 1))
+        time.sleep(random.uniform(1, 3))
 
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
@@ -219,7 +219,7 @@ class SlotReservation:
                     driver.find_element(
                         By.CLASS_NAME, "mdc-button__ripple"
                     ).click()
-                    time.sleep(random.uniform(1, 2))
+                    time.sleep(random.uniform(2, 4))
                 else:
                     break
             except NoSuchElementException:
