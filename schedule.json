@@ -94,7 +94,7 @@
         {
           "day_of_week": 5,
           "starting_time": "12:00 PM",
-          "follow": true
+          "follow": false
         },
         {
           "day_of_week": 6,
