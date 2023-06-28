@@ -122,13 +122,24 @@ class SlotReservation:
         driver.find_elements(By.CLASS_NAME, "header-text")[-1].click()
         weekday_name = calendar.day_name[rec_slot["day_of_week"]-1]
 
-        driver.find_element(
-            By.CSS_SELECTOR,
-            "[aria-label*='" +
-            rec_slot["starting_time"] + " " +
-            weekday_name + "']"
-        ).click()
-        time.sleep(random.uniform(0.1, 0.9))
+        try:
+            driver.find_element(
+                By.CSS_SELECTOR,
+                "[aria-label*='" +
+                rec_slot["starting_time"] + " " +
+                weekday_name + "']"
+            ).click()
+            time.sleep(random.uniform(0.1, 0.9))
+        except NoSuchElementException:
+            message: str = (
+                f'❌ Failed to reserve slot in {rec_name} '
+                f'at {rec_slot["starting_time"]}, '
+                f'incorrect time slot'
+            )
+            logging.error(message)
+            self.telegram_bot.send_message(message)
+            self.telegram_bot.send_photo(driver.get_screenshot_as_png())
+            return False
 
         self._fill_reservation_form(driver)
 
