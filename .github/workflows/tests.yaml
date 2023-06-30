@@ -13,6 +13,6 @@ jobs:
           python-version: 3.11
       - run: sudo timedatectl set-timezone America/Toronto
       - run: |
-          pip install flake8 pylint pipenv
+          pip install flake8 pylint
       - run: flake8 src/
       - run: pylint src/
