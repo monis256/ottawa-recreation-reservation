@@ -43,9 +43,9 @@ The file [`schedule.json`](schedule.json) contains a list of facilities for Adul
 - `link (str)`: The reservation page for the facility
 - `activity_button (str)`: The exact name of the button to be clicked for reservation. Make sure to use the correct name (use the browser's inspector for the button element)
 - `schedule[] (list)`: A list of schedules
-- `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
-- `starting_time (str)`: The starting time for the activity
-- `follow (bool)`: If set to `true`, the script will attempt to reserve this facility. Set it to `false` to skip
+  - `day (int)`: The day of the week in ISO format (Monday - 1, Sunday - 7)
+  - `starting_time (str)`: The starting time for the activity
+  - `follow (bool)`: If set to `true`, the script will attempt to reserve this facility. Set it to `false` to skip
 
 ## Prerequisites
 
@@ -54,21 +54,25 @@ Before running the script, you need to set up some environment variables contain
 There are two ways to accomplish this: using a `.env` file or manually setting environment variables (e.g., `export EMAIL=bla@blah.com`).
 The first approach is suitable for running the script manually on your local machine, while the second approach is intended for CI/CD environments.
 
-The content of the `.env` file (or the environment variables in your CI/CD system) should include the following mandatory variables:
+The content of the `.env` file (or the environment variables in your CI/CD system) should include the following mandatory variables (see example in [`src/.env-sample`](src/.env-sample) file):
 
 ```ini
-PHONE_NUMBER="234567890"
-IMAP_EMAIL="my-email@gmail.com"
-IMAP_PASSWORD="my-password"
-IMAP_SERVER="mail.myserver.com"
-NAME="John Doe"
-TELEGRAM_BOT_TOKEN="12345:AABBCCDDEEFFGG"
-TELEGRAM_CHAT_ID="12345678"
+# Data for reservation
+PHONE_NUMBER="234567890"  # Phone number for reservation
+IMAP_EMAIL="my-email@gmail.com"  # Email for IMAP connection
+IMAP_PASSWORD="my-password"  # Password for IMAP connection
+IMAP_SERVER="mail.myserver.com"  # IMAP server address
+NAME="John Doe"  # User name for reservation
+
+# Telegram token and chat ID
+TELEGRAM_BOT_TOKEN="12345:AABBCCDDEEFFGG"  # Bot token for Telegram integration
+TELEGRAM_CHAT_ID="12345678"  # Chat ID for Telegram notifications
+
 ```
 
 ### How to Obtain a Telegram Token and Chat ID
 
-1. Go to [@BotFather](https://t.me/BotFather) and create a new bot using the `/newbot` command (e.g., `ottawa_rec_reservation_bot`)
+1. Go to [@BotFather](https://t.me/BotFather) and create a new bot using the `/newbot` command (e.g., `ottawa_rec_res_bot`)
 2. You will receive a token in the format `111111111:ABCDE`
 3. Next, go to [@MyTelegramID_bot](https://t.me/MyTelegramID_bot) and start the bot using the `/start` command
 4. You will receive your Telegram ID in the format `123456789`
@@ -78,7 +82,7 @@ TELEGRAM_CHAT_ID="12345678"
 1. Ensure that you have installed [Python](https://www.python.org/downloads/) on your machine
 2. Make a copy of the file [`src/.env-sample`](src/.env-sample) named `src/.env`
 3. Edit the contents of `src/.env` to match your credentials
-4. Install the required packages by running the following command:
+4. Install the required packages by running the following commands:
 
 ```bash
 pip install --upgrade pip pipenv
@@ -89,6 +93,12 @@ pipenv install
 
 ```bash
 pipenv run ./src/main.py
+```
+
+or if you prefer using `make`:
+
+```bash
+make run
 ```
 
 ## Script Usage with GitHub Actions
