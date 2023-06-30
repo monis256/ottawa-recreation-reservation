@@ -58,7 +58,10 @@ class SlotReservationApp:
         """
         Configure the logging settings for the application.
         """
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(
+            format='%(asctime)s | %(levelname)s: %(message)s',
+            level=logging.INFO
+        )
         logging.getLogger('WDM').setLevel(logging.ERROR)
 
     def _wait_for_cron_mode(self) -> None:
