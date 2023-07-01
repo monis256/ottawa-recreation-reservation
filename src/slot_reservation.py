@@ -222,6 +222,7 @@ class SlotReservation:
             name_input.send_keys(symbol)
             time.sleep(random.uniform(0.01, 0.1))
 
+        time.sleep(random.uniform(1, 2))
         driver.find_element(By.CLASS_NAME, "mdc-button__ripple").click()
 
     @staticmethod
