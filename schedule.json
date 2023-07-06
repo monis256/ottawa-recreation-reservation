@@ -66,12 +66,12 @@
         {
           "day_of_week": 4,
           "starting_time": "5:00 PM",
-          "follow": true
+          "follow": false
         },
         {
           "day_of_week": 5,
           "starting_time": "7:15 PM",
-          "follow": true
+          "follow": false
         }
       ]
     },
@@ -84,12 +84,12 @@
         {
           "day_of_week": 5,
           "starting_time": "7:00 PM",
-          "follow": true
+          "follow": false
         },
         {
           "day_of_week": 5,
           "starting_time": "8:00 PM",
-          "follow": true
+          "follow": false
         },
         {
           "day_of_week": 6,
