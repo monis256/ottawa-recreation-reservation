@@ -30,7 +30,7 @@
         {
           "day_of_week": 6,
           "starting_time": "12:30 PM",
-          "follow": false
+          "follow": true
         }
       ]
     },
@@ -81,6 +81,16 @@
       "link": "https://reservation.frontdesksuite.ca/rcfs/richcraftkanata/",
       "activity_button": "Volleyball - adult",
       "schedule": [
+        {
+          "day_of_week": 2,
+          "starting_time": "7:00 PM",
+          "follow": true
+        },
+        {
+          "day_of_week": 2,
+          "starting_time": "8:00 PM",
+          "follow": true
+        },
         {
           "day_of_week": 5,
           "starting_time": "7:00 PM",
